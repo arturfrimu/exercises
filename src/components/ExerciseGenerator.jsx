@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {AdditionExerciseGenerator} from "./AdditionExerciseGenerator";
 
 const ExerciseGenerator = () => {
     const [input, setInput] = useState("");
@@ -34,52 +35,19 @@ const ExerciseGenerator = () => {
         setResult(`Incorrect. ${exercise.replace("X", expectedResult)} ≠ ${input}. Try again.`);
     }
 
-    const handleSubmit = (event, onSuccess, onError) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         expectedResult === Number(input) ? onSuccess() : onError();
     }
 
     const getRandomNumber = () => {
         return Math.floor(Math.random() * (maxRandomNumber - minRandomNumber + 1) + minRandomNumber);
-        // return Math.floor(Math.random() * 20) + 1;
-    }
-
-    // ==================== ADDITION ====================
-
-    const additionLevel1 = () => {
-        const randomNumber1 = getRandomNumber();
-        const randomNumber2 = getRandomNumber();
-        setExercise(`${randomNumber1} + ${randomNumber2} = X`);
-        setExpectedResult(randomNumber1 + randomNumber2);
-    }
-
-    const additionLevel2 = () => {
-        const randomNumber1 = getRandomNumber();
-        const randomNumber2 = getRandomNumber();
-        setExercise(`X = ${randomNumber1} + ${randomNumber2}`);
-        setExpectedResult(randomNumber1 + randomNumber2);
-    }
-
-    const additionLevel3 = () => {
-        let randomNumber1 = getRandomNumber();
-        let randomNumber2 = getRandomNumber();
-        if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
-        }
-        setExercise(`${randomNumber1} = X + ${randomNumber2}`);
-        setExpectedResult(randomNumber1 - randomNumber2);
     }
 
     const addition = () => {
-        const additionLevels = [
-            additionLevel1,
-            additionLevel2,
-            additionLevel3
-        ];
-
-        additionLevels[additionLevel]();
+        const expected = new AdditionExerciseGenerator().addition(additionLevel);
+        setExercise(expected.exercise)
+        setExpectedResult(expected.result);
     }
 
     // ==================== SUBTRACTION ====================
@@ -142,7 +110,7 @@ const ExerciseGenerator = () => {
             <button onClick={generateExercise}>Generate Exercise</button>
             <div style={{fontSize: "30px", margin: "10px 0", textAlign: "center"}}>{exercise}</div>
             <form style={{display: "flex", justifyContent: "center"}}
-                  onSubmit={(e) => handleSubmit(e, onSuccess, onError)}>
+                  onSubmit={(e) => handleSubmit(e)}>
                 <input type="text" value={input} onChange={handleChange} style={{margin: "0 10px"}}/>
                 <button type="submit">Submit</button>
             </form>
