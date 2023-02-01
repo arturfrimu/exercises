@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {AdditionExerciseGenerator} from "./AdditionExerciseGenerator";
 import {SubtractionExerciseGenerator} from "./SubtractionExerciseGenerator";
+import {MultiplyExerciseGenerator} from "./MultiplyExerciseGenerator";
 
 const ExerciseGenerator = () => {
     const [input, setInput] = useState("");
@@ -9,6 +10,7 @@ const ExerciseGenerator = () => {
     const [expectedResult, setExpectedResult] = useState(null);
     const [additionLevel, setAdditionLevel] = useState(1);
     const [subtractionLevel, setSubtractionLevel] = useState(1);
+    const [multiplyLevel, setMultiplyLevel] = useState(1);
 
     const handleChange = (event) => {
         setInput(event.target.value);
@@ -19,14 +21,13 @@ const ExerciseGenerator = () => {
         console.log(randomLevel)
         setAdditionLevel(randomLevel);
         setSubtractionLevel(randomLevel);
+        setMultiplyLevel(randomLevel);
     }
 
     const onSuccess = () => {
         setResult(`Correct! ${exercise.replace("X", input)}`);
         generateExercise()
         setInput("");
-
-        changeLevelRandom()
     }
 
     const onError = () => {
@@ -50,13 +51,19 @@ const ExerciseGenerator = () => {
         setExpectedResult(expected.result);
     }
 
+    const multiplication = () => {
+        const expected = new MultiplyExerciseGenerator().multiply(multiplyLevel);
+        setExercise(expected.exercise)
+        setExpectedResult(expected.result);
+    }
+
     const generateExercise = () => {
         changeLevelRandom()
         const idx = Math.floor(Math.random() * exercisesList.length);
         exercisesList[idx]();
     }
 
-    const exercisesList = [addition, subtraction];
+    const exercisesList = [addition, subtraction, multiplication];
 
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
