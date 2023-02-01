@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {AdditionExerciseGenerator} from "./AdditionExerciseGenerator";
+import {SubtractionExerciseGenerator} from "./SubtractionExerciseGenerator";
 
 const ExerciseGenerator = () => {
     const [input, setInput] = useState("");
@@ -9,15 +10,13 @@ const ExerciseGenerator = () => {
     const [additionLevel, setAdditionLevel] = useState(1);
     const [subtractionLevel, setSubtractionLevel] = useState(1);
 
-    const maxRandomNumber = 10;
-    const minRandomNumber = 5;
-
     const handleChange = (event) => {
         setInput(event.target.value);
     }
 
     const changeLevelRandom = () => {
-        const randomLevel = Math.floor(Math.random() * 2) + 1;
+        const randomLevel = Math.floor(Math.random() * 3);
+        console.log(randomLevel)
         setAdditionLevel(randomLevel);
         setSubtractionLevel(randomLevel);
     }
@@ -27,7 +26,6 @@ const ExerciseGenerator = () => {
         generateExercise()
         setInput("");
 
-        // Change levels random
         changeLevelRandom()
     }
 
@@ -40,65 +38,20 @@ const ExerciseGenerator = () => {
         expectedResult === Number(input) ? onSuccess() : onError();
     }
 
-    const getRandomNumber = () => {
-        return Math.floor(Math.random() * (maxRandomNumber - minRandomNumber + 1) + minRandomNumber);
-    }
-
     const addition = () => {
         const expected = new AdditionExerciseGenerator().addition(additionLevel);
         setExercise(expected.exercise)
         setExpectedResult(expected.result);
     }
 
-    // ==================== SUBTRACTION ====================
-
-    const subtractionLevel1 = () => {
-        let randomNumber1 = getRandomNumber();
-        let randomNumber2 = getRandomNumber();
-        if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
-        }
-        setExercise(`${randomNumber1} - ${randomNumber2} = X`);
-        setExpectedResult(randomNumber1 - randomNumber2);
-    }
-
-    const subtractionLevel2 = () => {
-        let randomNumber1 = getRandomNumber();
-        let randomNumber2 = getRandomNumber();
-        if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
-        }
-        setExercise(`X = ${randomNumber1} - ${randomNumber2}`);
-        setExpectedResult(randomNumber1 - randomNumber2);
-    }
-
-    const subtractionLevel3 = () => {
-        let randomNumber1 = getRandomNumber();
-        let randomNumber2 = getRandomNumber();
-        if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
-        }
-        setExercise(`${randomNumber1} - X = ${randomNumber2}`);
-        setExpectedResult(randomNumber1 - randomNumber2);
-    }
-
     const subtraction = () => {
-        const subtractionLevels = [
-            subtractionLevel1,
-            subtractionLevel2,
-            subtractionLevel3
-        ];
-
-        subtractionLevels[subtractionLevel]();
+        const expected = new SubtractionExerciseGenerator().subtraction(subtractionLevel);
+        setExercise(expected.exercise)
+        setExpectedResult(expected.result);
     }
 
     const generateExercise = () => {
+        changeLevelRandom()
         const idx = Math.floor(Math.random() * exercisesList.length);
         exercisesList[idx]();
     }
