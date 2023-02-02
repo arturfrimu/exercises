@@ -1,11 +1,15 @@
 import React from 'react';
 import './App.css';
 import ExerciseGenerator from "./components/ExerciseGenerator";
+import SortingGenerator from "./components/sorting/SortingGenerator";
 
 
 function App() {
     return (
-        <ExerciseGenerator/>
+        <div>
+            <ExerciseGenerator/>
+            <SortingGenerator/>
+        </div>
     )
 }
 
