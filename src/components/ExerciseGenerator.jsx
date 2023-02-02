@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {AdditionExerciseGenerator} from "./AdditionExerciseGenerator";
 import {SubtractionExerciseGenerator} from "./SubtractionExerciseGenerator";
 import {MultiplyExerciseGenerator} from "./MultiplyExerciseGenerator";
+import {DivisionExerciseGenerator} from "./DivisionExerciseGenerator";
 
 const ExerciseGenerator = () => {
     const [input, setInput] = useState("");
@@ -11,6 +12,7 @@ const ExerciseGenerator = () => {
     const [additionLevel, setAdditionLevel] = useState(1);
     const [subtractionLevel, setSubtractionLevel] = useState(1);
     const [multiplyLevel, setMultiplyLevel] = useState(1);
+    const [divisionLevel, setDivisionLevel] = useState(1);
 
     const handleChange = (event) => {
         setInput(event.target.value);
@@ -22,6 +24,7 @@ const ExerciseGenerator = () => {
         setAdditionLevel(randomLevel);
         setSubtractionLevel(randomLevel);
         setMultiplyLevel(randomLevel);
+        setDivisionLevel(randomLevel);
     }
 
     const onSuccess = () => {
@@ -57,13 +60,19 @@ const ExerciseGenerator = () => {
         setExpectedResult(expected.result);
     }
 
+    const division = () => {
+        const expected = new DivisionExerciseGenerator().division(divisionLevel);
+        setExercise(expected.exercise)
+        setExpectedResult(expected.result);
+    }
+
     const generateExercise = () => {
         changeLevelRandom()
         const idx = Math.floor(Math.random() * exercisesList.length);
         exercisesList[idx]();
     }
 
-    const exercisesList = [addition, subtraction, multiplication];
+    const exercisesList = [addition, subtraction, multiplication, division];
 
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
