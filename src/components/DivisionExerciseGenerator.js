@@ -1,8 +1,14 @@
+const min = 2
+const max = 10
+
+let randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+let randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
+
 export class DivisionExerciseGenerator {
 
     divisionLevel1() {
-        const randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        const randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         return {
             exercise: `${(randomNumber1 * randomNumber2)} / ${randomNumber1} = X`,
@@ -11,8 +17,8 @@ export class DivisionExerciseGenerator {
     }
 
     divisionLevel2() {
-        const randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        const randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         return {
             exercise: `X = ${(randomNumber1 * randomNumber2)} / ${randomNumber2}`,
@@ -21,13 +27,13 @@ export class DivisionExerciseGenerator {
     }
 
     divisionLevel3() {
-        let randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        let randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
+            let temp = randomNumber1
+            randomNumber1 = randomNumber2
+            randomNumber2 = temp
         }
 
         return {
@@ -41,8 +47,8 @@ export class DivisionExerciseGenerator {
             this.divisionLevel1,
             this.divisionLevel2,
             this.divisionLevel3
-        ];
+        ]
 
-        return divisionLevels[divisionLevel]();
+        return divisionLevels[divisionLevel]()
     }
 }

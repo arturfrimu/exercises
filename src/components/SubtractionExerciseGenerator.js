@@ -1,13 +1,19 @@
+const min = 2
+const max = 10
+
+let randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+let randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
+
 export class SubtractionExerciseGenerator {
 
     subtractionLevel1() {
-        let randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        let randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
+            let temp = randomNumber1
+            randomNumber1 = randomNumber2
+            randomNumber2 = temp
         }
 
         return {
@@ -17,13 +23,13 @@ export class SubtractionExerciseGenerator {
     }
 
     subtractionLevel2() {
-        let randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        let randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
+            let temp = randomNumber1
+            randomNumber1 = randomNumber2
+            randomNumber2 = temp
         }
 
         return {
@@ -33,13 +39,13 @@ export class SubtractionExerciseGenerator {
     }
 
     subtractionLevel3() {
-        let randomNumber1 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-        let randomNumber2 = Math.floor(Math.random() * (10 - 5 + 1) + 5);
+        randomNumber1 = Math.floor(Math.random() * (max - min + 1) + min)
+        randomNumber2 = Math.floor(Math.random() * (max - min + 1) + min)
 
         if (randomNumber1 - randomNumber2 < 0) {
-            let temp = randomNumber1;
-            randomNumber1 = randomNumber2;
-            randomNumber2 = temp;
+            let temp = randomNumber1
+            randomNumber1 = randomNumber2
+            randomNumber2 = temp
         }
 
         return {
@@ -53,8 +59,8 @@ export class SubtractionExerciseGenerator {
             this.subtractionLevel1,
             this.subtractionLevel2,
             this.subtractionLevel3
-        ];
+        ]
 
-        return subtractionLevels[subtractionLevel]();
+        return subtractionLevels[subtractionLevel]()
     }
 }
