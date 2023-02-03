@@ -53,10 +53,6 @@ const FigureGenerator = () => {
 
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            {/*<img src={} alt="My Image" style={{*/}
-            {/*    width: "500px",*/}
-            {/*    height: "500px"*/}
-            {/*}}/>*/}
             {ques.image}
             <p>{question}</p>
 

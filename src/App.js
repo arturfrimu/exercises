@@ -3,6 +3,7 @@ import './App.css';
 import ExerciseGenerator from "./components/mathematics/ExerciseGenerator";
 import SortingGenerator from "./components/sorting/SortingGenerator";
 import FigureGenerator from "./components/geometry/FigureGenerator";
+import ComparingGenerator from "./components/comparing/ComparingGenerator";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <ExerciseGenerator/>,
         <SortingGenerator/>,
         <FigureGenerator/>,
+        <ComparingGenerator/>,
     ];
 
     const [select, setSelect] = useState(2);
@@ -32,6 +34,7 @@ function App() {
                         <option value="0">Exercitii matematice</option>
                         <option value="1">Sortare</option>
                         <option value="2">Figuri geometrice</option>
+                        <option value="3">Comparatii</option>
                     </select>
                 </label>
             </div>
