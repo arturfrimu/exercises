@@ -1,14 +1,41 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import ExerciseGenerator from "./components/ExerciseGenerator";
 import SortingGenerator from "./components/sorting/SortingGenerator";
+import FigureGenerator from "./components/geometry/FigureGenerator";
 
 
 function App() {
+
+    const arr = [
+        <ExerciseGenerator/>,
+        <SortingGenerator/>,
+        <FigureGenerator/>,
+    ];
+
+    const [select, setSelect] = useState(0);
+
+    const changeSortDirectionHandler = (event) => {
+        setSelect(parseInt(event.target.value))
+    }
+
     return (
         <div>
-            <ExerciseGenerator/>
-            <SortingGenerator/>
+            <div style={{textAlign: 'center'}}>
+                <label style={{fontWeight: 'bold', marginRight: '10px'}}>
+                    Selecteaza directia:
+                    <select value={select} onChange={changeSortDirectionHandler} style={{
+                        padding: '10px',
+                        fontSize: '16px',
+                        marginBottom: '20px',
+                    }}>
+                        <option value="0">Exercitii matematice</option>
+                        <option value="1">Sortare</option>
+                        <option value="2">Figuri geometrice</option>
+                    </select>
+                </label>
+            </div>
+            {arr[select]}
         </div>
     )
 }
