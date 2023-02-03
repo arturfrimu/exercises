@@ -15,12 +15,12 @@ const SortingGenerator = () => {
 
     const generateNumbers = () => {
         setNumbers([
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11),
-            Math.floor(Math.random() * 11)
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100)
         ])
     }
 

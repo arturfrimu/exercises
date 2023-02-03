@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import ExerciseGenerator from "./components/ExerciseGenerator";
+import ExerciseGenerator from "./components/mathematics/ExerciseGenerator";
 import SortingGenerator from "./components/sorting/SortingGenerator";
 import FigureGenerator from "./components/geometry/FigureGenerator";
 
@@ -13,7 +13,7 @@ function App() {
         <FigureGenerator/>,
     ];
 
-    const [select, setSelect] = useState(0);
+    const [select, setSelect] = useState(2);
 
     const changeSortDirectionHandler = (event) => {
         setSelect(parseInt(event.target.value))
