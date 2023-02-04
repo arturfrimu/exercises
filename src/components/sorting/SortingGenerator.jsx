@@ -1,119 +1,108 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react"
 
 const SortingGenerator = () => {
-    const [numbers, setNumbers] = useState([]);
-    const [draggedIndex, setDraggedIndex] = useState();
-    const [sortDirection, setSortDirection] = useState(0);
+  const [numbers, setNumbers] = useState([])
+  const [draggedIndex, setDraggedIndex] = useState()
+  const [sortDirection, setSortDirection] = useState(0)
 
-    const changeSortDirectionHandler = (event) => {
-        setSortDirection(parseInt(event.target.value))
+  const changeSortDirectionHandler = event => {
+    setSortDirection(parseInt(event.target.value))
+  }
+
+  useEffect(() => {
+    generateNumbers()
+  }, [])
+
+  const generateNumbers = () => {
+    const randomNums = []
+    for (let i = 0; i <= 5; i++) {
+      randomNums.push(Math.floor(Math.random() * 100))
     }
+    setNumbers(randomNums)
+  }
 
-    useEffect(() => {
-        generateNumbers()
-    }, [])
+  const onDragStart = index => {
+    setDraggedIndex(index)
+  }
 
-    const generateNumbers = () => {
-        setNumbers([
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100)
-        ])
+  const onDragOver = index => {
+    const draggedOverIndex = index
+    if (draggedOverIndex === draggedIndex) {
+      return
     }
+    const newNumbers = [...numbers]
+    const temp = newNumbers[draggedIndex]
+    newNumbers[draggedIndex] = newNumbers[draggedOverIndex]
+    newNumbers[draggedOverIndex] = temp
+    setNumbers(newNumbers)
+    setDraggedIndex(draggedOverIndex)
+  }
 
-    const onDragStart = (index) => {
-        setDraggedIndex(index);
-    };
-
-    const onDragOver = (index) => {
-        const draggedOverIndex = index;
-        if (draggedOverIndex === draggedIndex) {
-            return;
-        }
-        const newNumbers = [...numbers];
-        const temp = newNumbers[draggedIndex];
-        newNumbers[draggedIndex] = newNumbers[draggedOverIndex];
-        newNumbers[draggedOverIndex] = temp;
-        setNumbers(newNumbers);
-        setDraggedIndex(draggedOverIndex);
-    };
-
-
-    const checkSortAscending = () => {
-        for (let i = 0; i < numbers.length - 1; i++) {
-            if (numbers[i] > numbers[i + 1]) {
-                return false;
-            }
-        }
-        return true;
-    };
-
-    const checkSortDescending = () => {
-        for (let i = 0; i < numbers.length - 1; i++) {
-            if (numbers[i] < numbers[i + 1]) {
-                return false;
-            }
-        }
-        return true;
-    };
-
-    const checkSort = () => {
-        return sort[sortDirection]();
+  const checkSortAscending = () => {
+    for (let i = 0; i < numbers.length - 1; i++) {
+      if (numbers[i] > numbers[i + 1]) {
+        return false
+      }
     }
+    return true
+  }
 
-    const sort = [checkSortAscending, checkSortDescending];
+  const checkSortDescending = () => {
+    for (let i = 0; i < numbers.length - 1; i++) {
+      if (numbers[i] < numbers[i + 1]) {
+        return false
+      }
+    }
+    return true
+  }
 
-    return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <h1>Numere generate:</h1>
-            <div style={{textAlign: 'center'}}>
-                <label style={{fontWeight: 'bold', marginRight: '10px'}}>
-                    Selecteaza directia:
-                    <select value={sortDirection} onChange={changeSortDirectionHandler} style={{
-                        padding: '10px',
-                        fontSize: '16px',
-                        marginBottom: '20px',
-                    }}>
-                        <option value="0">Ascendent</option>
-                        <option value="1">Descendent</option>
-                    </select>
-                </label>
-            </div>
-            <div style={{display: "flex", alignItems: "center", fontSize: "30px"}}>
-                {numbers.map((number, index) => (
-                    <div style={{
-                        margin: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textAlign: "center",
-                        fontSize: "30px",
-                        transition: "all 3s",
-                        padding: "10px",
-                        width: "30px",
-                        height: "30px",
-                        background: "lightblue"
-                    }}
-                         key={index}
-                         draggable
-                         onDragStart={() => onDragStart(index)}
-                         onDragOver={() => onDragOver(index)}
-                    >
-                        {number}
-                    </div>
-                ))}
-            </div>
-            <button onClick={generateNumbers}>Genereaza alt sir de numere</button>
-            <h2 style={{color: checkSort() ? "green" : "red"}}>
-                {checkSort()
-                    ? "Numerele sunt aranjate corect"
-                    : "Numerele nu sunt aranjate corect"}
-            </h2>
-        </div>
-    );
+  const checkSort = () => {
+    return sort[sortDirection]()
+  }
+
+  const sort = [checkSortAscending, checkSortDescending]
+
+  return (
+    <div className="d-flex flex-column align-items-center">
+      <h1 className="lead display-6 mb-3">Numere generate:</h1>
+      <div style={{ textAlign: "center" }}>
+        <label htmlFor="select-direction" className="lead mb-2">
+          Selecteaza directia:
+        </label>
+        <select
+          value={sortDirection}
+          onChange={changeSortDirectionHandler}
+          id="select-direction"
+          className="form-select"
+        >
+          <option value="0">Ascendent</option>
+          <option value="1">Descendent</option>
+        </select>
+      </div>
+      <div className="d-flex gap-2 my-4">
+        {numbers.map((number, index) => (
+          <div
+            style={{ width: 50, height: 50, backgroundColor: "#bde0fe" }}
+            className="d-flex justify-content-center  fs-3"
+            key={index}
+            draggable
+            onDragStart={() => onDragStart(index)}
+            onDragOver={() => onDragOver(index)}
+          >
+            {number}
+          </div>
+        ))}
+      </div>
+      <button onClick={generateNumbers} className="btn btn-primary mb-2">
+        Genereaza alt sir de numere
+      </button>
+      <div className={`alert alert-${checkSort() ? "success" : "danger"}`}>
+        {checkSort()
+          ? "Numerele sunt aranjate corect"
+          : "Numerele nu sunt aranjate corect"}
+      </div>
+    </div>
+  )
 }
 
-export default SortingGenerator;
+export default SortingGenerator
