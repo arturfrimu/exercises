@@ -1,0 +1,52 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#parallelogram {
+  width: 200px;
+  height: 100px;
+  background-color: lightblue;
+  transform: skew(-20deg);
+}
+
+#rectangle {
+  width: 200px;
+  height: 100px;
+  background-color: lightblue;
+}
+
+#rhombus {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+  transform: rotate(45deg);
+}
+
+#square {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+}
+
+#circle {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+  border-radius: 50%;
+}
+
+#oval {
+  width: 200px;
+  height: 100px;
+  background-color: lightblue;
+  border-radius: 50% / 50%;
+}
+
+#triangle {
+  width: 100px;
+  height: 100px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background-color: lightblue;
+}
