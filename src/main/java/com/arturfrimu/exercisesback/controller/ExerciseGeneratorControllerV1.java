@@ -41,11 +41,13 @@ public class ExerciseGeneratorControllerV1 {
             int result = first * second;
             exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result));
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, multiplication));
-        } else {
+        } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(type)) {
             String division = first + " / " + second + " = ";
             int result = first / second;
             exercises.put(exerciseId, new Exercise(exerciseId, division, result));
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, division));
+        } else {
+           return ResponseEntity.badRequest().build();
         }
     }
 
