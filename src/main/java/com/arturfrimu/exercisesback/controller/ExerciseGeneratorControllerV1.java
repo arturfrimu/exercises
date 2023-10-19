@@ -56,13 +56,8 @@ public class ExerciseGeneratorControllerV1 {
         log.info("Ai intrat in generateExercise");
         Exercise exercise = exercises.get(verifyRequest.id());
         boolean isCorrect = exercise.verify(verifyRequest.userInput);
-        if (isCorrect) {
-            return ResponseEntity.ok(isCorrect);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(isCorrect);
     }
-
 
     // @formatter:off
     public record ExerciseResponse(Long id, String expression) {}
