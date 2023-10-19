@@ -21,6 +21,7 @@ public class ExerciseGeneratorControllerV1 {
 
     @GetMapping
     public ResponseEntity<ExerciseResponse> generateExercise(@RequestParam(name = "type") String type) {
+        log.info("Ai intrat in generateExercise cu tip : " + type);
         long exerciseId = random.nextLong();
         int first = random.nextInt(20) + 1;
         int second = random.nextInt(20) + 1;
@@ -50,6 +51,7 @@ public class ExerciseGeneratorControllerV1 {
 
     @PostMapping
     public ResponseEntity<Boolean> verify(@RequestBody VerifyRequest verifyRequest) {
+        log.info("Ai intrat in generateExercise");
         Exercise exercise = exercises.get(verifyRequest.id());
         boolean isCorrect = exercise.verify(verifyRequest.userInput);
         if (isCorrect) {
