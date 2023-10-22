@@ -1,7 +1,8 @@
 package com.arturfrimu.exercisesback.controller;
 
 import com.arturfrimu.exercisesback.common.BaseRestTemplate;
-import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV1.ExerciseResponse;
+import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.ExerciseResponse;
+import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.VerifyRequest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -53,7 +54,7 @@ class ExerciseGeneratorControllerV5Test {
         String BASE_URL_VERIFY = "http://localhost:%d/api/v5/exercise-generator";
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
                 post(BASE_URL_VERIFY.formatted(PORT))
-                        .body(new ExerciseGeneratorControllerV1.VerifyRequest(generatedExercice.id(), verify)), VERIFY);
+                        .body(new VerifyRequest(generatedExercice.id(), verify)), VERIFY);
 
         assertThat(exchange).isNotNull();
         assertThat(exchange.getBody()).isNotNull();
