@@ -3,9 +3,11 @@ package com.arturfrimu.exercisesback.controller;
 import com.arturfrimu.exercisesback.common.BaseRestTemplate;
 import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.VerifyRequest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,8 +15,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.stream.Stream;
 
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.Status.CORRECT;
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.Status.UNSOLVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -49,6 +54,7 @@ class ExerciseGeneratorControllerV5Test {
         ExerciseResponse generatedExercice = response.getBody();
         assertThat(generatedExercice).isNotNull();
         assertThat(generatedExercice.expression()).isEqualTo(expected);
+        assertThat(generatedExercice.status()).isEqualTo(UNSOLVED);
 
 
         String BASE_URL_VERIFY = "http://localhost:%d/api/v5/exercise-generator";
@@ -61,6 +67,32 @@ class ExerciseGeneratorControllerV5Test {
         assertThat(exchange.getStatusCode().is2xxSuccessful()).isTrue();
 
         assertThat(exchange.getBody()).isTrue();
+
+        ResponseEntity<ExerciseResponse> exerciseById = restTemplate.exchange(get("http://localhost:%d/api/v5/exercise-generator/exercises/%s".formatted(PORT, generatedExercice.id())).build(), EXERCISE);
+
+        assertThat(exerciseById.getBody()).isNotNull();
+        assertThat(exerciseById.getBody().status()).isEqualTo(CORRECT);
+
+        ResponseEntity<List<ExerciseResponse>> allExercises = restTemplate.exchange(get("http://localhost:%d/api/v5/exercise-generator/exercises".formatted(PORT)).build(), EXERCISE_LIST);
+        assertThat(allExercises.getBody()).isNotNull();
+        allExercises.getBody().forEach(System.out::println);
+    }
+
+    @Test
+    void getAllExercises() {
+        String BASE_URL = "http://localhost:%d/api/v5/exercise-generator?type=%s&position=%s&min=%d&max=%d";
+
+        for (int i = 0; i < 10; i++) {
+            Integer first = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
+            Integer second = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
+            when(randomNumberGeneratorMock.generate(anyInt(), anyInt())).thenReturn(first).thenReturn(second);
+            ResponseEntity<ExerciseResponse> generatedExercice = restTemplate.exchange(get(BASE_URL.formatted(PORT, "sum", "left", 1, 10)).build(), EXERCISE);
+        }
+
+        ResponseEntity<List<ExerciseResponse>> allExercises = restTemplate.exchange(get("http://localhost:%d/api/v5/exercise-generator/exercises".formatted(PORT)).build(), EXERCISE_LIST);
+        assertThat(allExercises.getBody()).isNotNull();
+        assertThat(allExercises.getBody()).hasSize(10);
+        allExercises.getBody().forEach(System.out::println);
     }
 
     private static Stream<Arguments> generateExerciseArgumentsProvider() {
@@ -89,5 +121,6 @@ class ExerciseGeneratorControllerV5Test {
 
     // @formatter:off
     static final ParameterizedTypeReference<ExerciseResponse> EXERCISE = new ParameterizedTypeReference<>() {};
+    static final ParameterizedTypeReference<List<ExerciseResponse>> EXERCISE_LIST = new ParameterizedTypeReference<>() {};
     static final ParameterizedTypeReference<Boolean> VERIFY = new ParameterizedTypeReference<>() {};
 }

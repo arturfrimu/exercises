@@ -6,11 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.Status.UNSOLVED;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @CrossOrigin(origins = "*", methods = {POST, GET, PUT, PATCH})
@@ -21,7 +19,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class ExerciseGeneratorControllerV5 {
 
     private final RandomNumberGenerator<Integer> randomIntGenerator;
-    private final RandomNumberGenerator<Long> randomLongGenerator;
 
     private static final Map<UUID, Exercise> exercises = new HashMap<>();
 
@@ -40,7 +37,7 @@ public class ExerciseGeneratorControllerV5 {
         UUID exerciseId = UUID.randomUUID();
 
         while (exercises.containsKey(exerciseId)) {
-            exerciseId =  UUID.randomUUID();
+            exerciseId = UUID.randomUUID();
         }
 
         int temp;
@@ -50,10 +47,10 @@ public class ExerciseGeneratorControllerV5 {
 
                 String sum = first + " + " + second + " = ?";
                 int result = first + second;
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum, UNSOLVED));
 
             } else if (ExerciseSumIncognitePosition.CENTER.name().equalsIgnoreCase(position)) {
 
@@ -65,10 +62,10 @@ public class ExerciseGeneratorControllerV5 {
 
                 String sum = first + " + ? = " + second;
                 int result = second - first;
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum, UNSOLVED));
 
             } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
 
@@ -80,10 +77,10 @@ public class ExerciseGeneratorControllerV5 {
 
                 String sum = "? + " + first + " = " + second;
                 int result = second - first;
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum, UNSOLVED));
 
             } else {
                 return ResponseEntity.badRequest().build();
@@ -100,10 +97,10 @@ public class ExerciseGeneratorControllerV5 {
 
                 String difference = first + " - " + second + " = ?";
                 int result = first - second;
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference, UNSOLVED));
 
             } else if (ExerciseSumIncognitePosition.CENTER.name().equalsIgnoreCase(position)) {
 
@@ -115,19 +112,19 @@ public class ExerciseGeneratorControllerV5 {
 
                 String difference = first + " - ? = " + second;
                 int result = first - second;
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference, UNSOLVED));
 
             } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
 
                 String difference = "? - " + first + " = " + second;
                 int result = first + second;
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result));
+                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
-                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference));
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference, UNSOLVED));
 
             } else {
                 return ResponseEntity.badRequest().build();
@@ -136,10 +133,10 @@ public class ExerciseGeneratorControllerV5 {
 
             String multiplication = first + " * " + second + " = ?";
             int result = first * second;
-            exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result));
+            exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, multiplication, result);
             log.info("exercises {}", exercises);
-            return ResponseEntity.ok(new ExerciseResponse(exerciseId, multiplication));
+            return ResponseEntity.ok(new ExerciseResponse(exerciseId, multiplication, UNSOLVED));
 
         } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(type)) {
 
@@ -151,10 +148,10 @@ public class ExerciseGeneratorControllerV5 {
 
             String division = first + " / " + second + " = ?";
             int result = first / second;
-            exercises.put(exerciseId, new Exercise(exerciseId, division, result));
+            exercises.put(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, division, result);
             log.info("exercises {}", exercises);
-            return ResponseEntity.ok(new ExerciseResponse(exerciseId, division));
+            return ResponseEntity.ok(new ExerciseResponse(exerciseId, division, UNSOLVED));
 
         } else {
             return ResponseEntity.badRequest().build();
@@ -173,14 +170,41 @@ public class ExerciseGeneratorControllerV5 {
         }
 
         boolean isCorrect = exercise.verify(verifyRequest.userInput);
+
+        if (isCorrect) {
+            Exercise correctExercise = exercise.markAs(Status.CORRECT);
+            exercises.put(correctExercise.id, correctExercise);
+        } else {
+            Exercise errorExercise = exercise.markAs(Status.ERROR);
+            exercises.put(errorExercise.id, errorExercise);
+        }
+
         return ResponseEntity.ok(isCorrect);
     }
 
+    @GetMapping("/exercises")
+    public ResponseEntity<List<ExerciseResponse>> getAll() {
+        List<ExerciseResponse> allExercises = exercises.values().stream()
+                .map(exercise -> new ExerciseResponse(exercise.id, exercise.expression, exercise.status))
+                .toList();
+        return ResponseEntity.ok(allExercises);
+    }
+
+    @GetMapping("/exercises/{id}")
+    public ResponseEntity<ExerciseResponse> getById(@PathVariable UUID id) {
+        Exercise exercise = exercises.get(id);
+        return ResponseEntity.ok(new ExerciseResponse(exercise.id, exercise.expression, exercise.status));
+    }
+
     // @formatter:off
-    public record ExerciseResponse(UUID id, String expression) {}
-    public record Exercise(UUID id, String expression, Integer result) {
+    public record ExerciseResponse(UUID id, String expression, Status status) {}
+    public record Exercise(UUID id, String expression, Integer result, Status status) {
         private boolean verify(final Integer requestResult) {
             return this.result.equals(requestResult);
+        }
+
+        public Exercise markAs(Status status) {
+            return new Exercise(id ,expression, result, status);
         }
     }
     public record VerifyRequest(UUID id, Integer userInput) {}
@@ -191,5 +215,9 @@ public class ExerciseGeneratorControllerV5 {
 
     public enum ExerciseSumIncognitePosition {
         LEFT, CENTER, RIGHT;
+    }
+    
+    public enum Status { 
+        UNSOLVED, CORRECT, ERROR 
     }
 }
