@@ -46,7 +46,7 @@ public class ExerciseGeneratorControllerV6 {
             if (ExerciseSumIncognitePosition.RIGHT.name().equalsIgnoreCase(position)) {
 
                 String sum = first + " + " + second + " = ?";
-                int result = first + second;
+                String result = String.valueOf(first + second);
                 exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
@@ -61,7 +61,7 @@ public class ExerciseGeneratorControllerV6 {
                 }
 
                 String sum = first + " + ? = " + second;
-                int result = second - first;
+                String result = String.valueOf(second - first);
                 exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
@@ -76,7 +76,7 @@ public class ExerciseGeneratorControllerV6 {
                 }
 
                 String sum = "? + " + first + " = " + second;
-                int result = second - first;
+                String result = String.valueOf(second - first);
                 exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
                 log.info("exercises {}", exercises);
@@ -96,7 +96,7 @@ public class ExerciseGeneratorControllerV6 {
                 }
 
                 String difference = first + " - " + second + " = ?";
-                int result = first - second;
+                String result = String.valueOf(first - second);
                 exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
@@ -111,7 +111,7 @@ public class ExerciseGeneratorControllerV6 {
                 }
 
                 String difference = first + " - ? = " + second;
-                int result = first - second;
+                String result = String.valueOf(first - second);
                 exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
@@ -120,7 +120,7 @@ public class ExerciseGeneratorControllerV6 {
             } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
 
                 String difference = "? - " + first + " = " + second;
-                int result = first + second;
+                String result = String.valueOf(first + second);
                 exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
                 log.info("exercises {}", exercises);
@@ -132,7 +132,7 @@ public class ExerciseGeneratorControllerV6 {
         } else if (ExerciseType.MULTIPLICATION.name().equalsIgnoreCase(type)) {
 
             String multiplication = first + " * " + second + " = ?";
-            int result = first * second;
+            String result = String.valueOf(first * second);
             exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, multiplication, result);
             log.info("exercises {}", exercises);
@@ -147,31 +147,47 @@ public class ExerciseGeneratorControllerV6 {
             }
 
             String division = first + " / " + second + " = ?";
-            int result = first / second;
+            String result = String.valueOf(first / second);
             exercises.put(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, division, result);
             log.info("exercises {}", exercises);
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, division, UNSOLVED));
 
-        } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(type)) {
-            String comparison = first + " ? " + second;
-
-            int result = 0;
-
-            if (first > second) {
-                result = 1;
-            } else if (first < second) {
-                result = -1;
-            }
-
-            exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
-            log.info("Exercise {} {} {}", exerciseId, comparison, result);
-            log.info("exercises {}", exercises);
-            return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
-
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/comparison")
+    public ResponseEntity<ExerciseResponse> generateComparisonExercise(
+            @RequestParam(name = "min") Integer min,
+            @RequestParam(name = "max") Integer max
+    ) {
+        log.info("Ai intrat in generateComparisonExercise min : {} max: {}", min, max);
+
+        int first = randomIntGenerator.generate(min, max);
+        int second = randomIntGenerator.generate(min, max);
+
+        UUID exerciseId = UUID.randomUUID();
+
+        while (exercises.containsKey(exerciseId)) {
+            exerciseId = UUID.randomUUID();
+        }
+
+        String comparison = first + " ? " + second;
+
+        String result = "=";
+
+        if (first > second) {
+            result = ">";
+        } else if (first < second) {
+            result = "<";
+        }
+
+        exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
+        log.info("Exercise {} {} {}", exerciseId, comparison, result);
+        log.info("exercises {}", exercises);
+        return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
     }
 
     @PostMapping
@@ -214,8 +230,8 @@ public class ExerciseGeneratorControllerV6 {
 
     // @formatter:off
     public record ExerciseResponse(UUID id, String expression, Status status) {}
-    public record Exercise(UUID id, String expression, Integer result, Status status) {
-        private boolean verify(final Integer requestResult) {
+    public record Exercise(UUID id, String expression, String result, Status status) {
+        private boolean verify(final String requestResult) {
             return this.result.equals(requestResult);
         }
 
@@ -223,10 +239,10 @@ public class ExerciseGeneratorControllerV6 {
             return new Exercise(id ,expression, result, status);
         }
     }
-    public record VerifyRequest(UUID id, Integer userInput) {}
+    public record VerifyRequest(UUID id, String userInput) {}
 
     public enum ExerciseType {
-        SUM, DIFFERENCE, MULTIPLICATION, DIVISION, COMPARISON;
+        SUM, DIFFERENCE, MULTIPLICATION, DIVISION
     }
 
     public enum ExerciseSumIncognitePosition {
