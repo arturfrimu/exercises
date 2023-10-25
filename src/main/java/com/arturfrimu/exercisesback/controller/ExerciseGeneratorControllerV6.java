@@ -156,41 +156,24 @@ public class ExerciseGeneratorControllerV6 {
             log.info("exercises {}", exercises);
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, division, UNSOLVED));
 
+        } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(type)) {
+            String comparison = first + " ? " + second;
+
+            String result = "=";
+
+            if (first > second) {
+                result = ">";
+            } else if (first < second) {
+                result = "<";
+            }
+
+            exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
+            log.info("Exercise {} {} {}", exerciseId, comparison, result);
+            log.info("exercises {}", exercises);
+            return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
         } else {
             return ResponseEntity.badRequest().build();
         }
-    }
-
-    @GetMapping("/comparison")
-    public ResponseEntity<ExerciseResponse> generateComparisonExercise(
-            @RequestParam(name = "min") Integer min,
-            @RequestParam(name = "max") Integer max
-    ) {
-        log.info("Ai intrat in generateComparisonExercise min : {} max: {}", min, max);
-
-        int first = randomIntGenerator.generate(min, max);
-        int second = randomIntGenerator.generate(min, max);
-
-        UUID exerciseId = UUID.randomUUID();
-
-        while (exercises.containsKey(exerciseId)) {
-            exerciseId = UUID.randomUUID();
-        }
-
-        String comparison = first + " ? " + second;
-
-        String result = "=";
-
-        if (first > second) {
-            result = ">";
-        } else if (first < second) {
-            result = "<";
-        }
-
-        exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
-        log.info("Exercise {} {} {}", exerciseId, comparison, result);
-        log.info("exercises {}", exercises);
-        return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
     }
 
     @PostMapping
@@ -284,7 +267,7 @@ public class ExerciseGeneratorControllerV6 {
     public record VerifyRequest(UUID id, String userInput) {}
 
     public enum ExerciseType {
-        SUM, DIFFERENCE, MULTIPLICATION, DIVISION
+        SUM, DIFFERENCE, MULTIPLICATION, DIVISION, COMPARISON
     }
 
     public enum ExerciseSumIncognitePosition {
