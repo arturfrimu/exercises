@@ -6,9 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.Status.UNSOLVED;
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.Status.*;
+import static java.math.MathContext.DECIMAL32;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @CrossOrigin(origins = "*", methods = {POST, GET, PUT, PATCH})
@@ -207,7 +210,7 @@ public class ExerciseGeneratorControllerV6 {
             Exercise correctExercise = exercise.markAs(Status.CORRECT);
             exercises.put(correctExercise.id, correctExercise);
         } else {
-            Exercise errorExercise = exercise.markAs(Status.ERROR);
+            Exercise errorExercise = exercise.markAs(ERROR);
             exercises.put(errorExercise.id, errorExercise);
         }
 
@@ -228,7 +231,46 @@ public class ExerciseGeneratorControllerV6 {
         return ResponseEntity.ok(new ExerciseResponse(exercise.id, exercise.expression, exercise.status));
     }
 
+    @GetMapping("/percentage")
+    public ResponseEntity<PercentageResponse> getPercentage() {
+        int exercisesSize = exercises.size();
+
+        if (exercisesSize == 0) {
+            return ResponseEntity.ok(new PercentageResponse("0", "0", "0"));
+        }
+
+        Map<Status, List<Exercise>> percentage = exercises.values()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Exercise::status,
+                        Collectors.mapping(
+                                exercise -> exercise,
+                                Collectors.toList()
+                        )
+                ));
+
+        BigDecimal totalPercentage = BigDecimal.valueOf(100);
+
+        int totalCorrectExercises = percentage.get(CORRECT).size();
+        int totalErrorExercises = percentage.get(ERROR).size();
+
+        BigDecimal correctPercentage = BigDecimal.valueOf(totalCorrectExercises)
+                .multiply(totalPercentage)
+                .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
+
+        BigDecimal errorPercentage = BigDecimal.valueOf(totalErrorExercises)
+                .multiply(totalPercentage)
+                .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
+
+        String correctExercisesPercent = correctPercentage.toString();
+        String errorExercisesPercent = errorPercentage.toString();
+        String unsolvedPercentage = totalPercentage.subtract(correctPercentage).subtract(errorPercentage).toString();
+
+        return ResponseEntity.ok(new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage));
+    }
+
     // @formatter:off
+    public record PercentageResponse(String success, String error,  String unsolved) {}
     public record ExerciseResponse(UUID id, String expression, Status status) {}
     public record Exercise(UUID id, String expression, String result, Status status) {
         private boolean verify(final String requestResult) {
