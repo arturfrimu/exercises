@@ -31,7 +31,6 @@ public class ExerciseGeneratorControllerV6 {
             @RequestParam(name = "position") String position,
             @RequestParam(name = "min") Integer min,
             @RequestParam(name = "max") Integer max)
-
     {
         log.info("Ai intrat in generateExercise cu tip : {} si pozitia : {}", type, position);
 
