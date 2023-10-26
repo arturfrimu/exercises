@@ -46,7 +46,7 @@ public class ExerciseGeneratorControllerV6 {
         int temp;
 
         if (ExerciseType.SUM.name().equalsIgnoreCase(type)) {
-            if (ExerciseSumIncognitePosition.RIGHT.name().equalsIgnoreCase(position)) {
+            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(position)) {
 
                 String sum = first + " + " + second + " = ?";
                 String result = String.valueOf(first + second);
@@ -55,7 +55,7 @@ public class ExerciseGeneratorControllerV6 {
                 log.info("exercises {}", exercises);
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum, UNSOLVED));
 
-            } else if (ExerciseSumIncognitePosition.CENTER.name().equalsIgnoreCase(position)) {
+            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(position)) {
 
                 if (first > second) {
                     temp = first;
@@ -70,7 +70,7 @@ public class ExerciseGeneratorControllerV6 {
                 log.info("exercises {}", exercises);
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum, UNSOLVED));
 
-            } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
+            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(position)) {
 
                 if (first > second) {
                     temp = first;
@@ -90,7 +90,7 @@ public class ExerciseGeneratorControllerV6 {
             }
 
         } else if (ExerciseType.DIFFERENCE.name().equalsIgnoreCase(type)) {
-            if (ExerciseSumIncognitePosition.RIGHT.name().equalsIgnoreCase(position)) {
+            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(position)) {
 
                 if (second > first) {
                     temp = first;
@@ -105,7 +105,7 @@ public class ExerciseGeneratorControllerV6 {
                 log.info("exercises {}", exercises);
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference, UNSOLVED));
 
-            } else if (ExerciseSumIncognitePosition.CENTER.name().equalsIgnoreCase(position)) {
+            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(position)) {
 
                 if (second > first) {
                     temp = first;
@@ -120,7 +120,7 @@ public class ExerciseGeneratorControllerV6 {
                 log.info("exercises {}", exercises);
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference, UNSOLVED));
 
-            } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
+            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(position)) {
 
                 String difference = "? - " + first + " = " + second;
                 String result = String.valueOf(first + second);
@@ -157,20 +157,52 @@ public class ExerciseGeneratorControllerV6 {
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, division, UNSOLVED));
 
         } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(type)) {
-            String comparison = first + " ? " + second;
 
-            String result = "=";
+            if (ExerciseComparison.ONE.name().equalsIgnoreCase(position)) {
+                String comparison = first + " ? " + second;
 
-            if (first > second) {
-                result = ">";
-            } else if (first < second) {
-                result = "<";
+                String result = "=";
+
+                if (first > second) {
+                    result = ">";
+                } else if (first < second) {
+                    result = "<";
+                }
+
+                exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
+                log.info("Exercise {} {} {}", exerciseId, comparison, result);
+                log.info("exercises {}", exercises);
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
+
+            } else if (ExerciseComparison.TWO.name().equalsIgnoreCase(position)) {
+
+                int third = randomIntGenerator.generate(min, max);
+                String comparison = first + " ? " + second + " ? " + third;
+
+                String result1 = "=";
+                String result2 = "=";
+
+                if (first > second) {
+                    result1 = ">";
+                } else if (first < second) {
+                    result1 = "<";
+                }
+
+                if (second > third) {
+                    result2 = ">";
+                } else if (second < third) {
+                    result2 = "<";
+                }
+
+                String combinedResult = result1 + " | "  + result2;
+
+                exercises.put(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
+                log.info("Exercise {} {} {}", exerciseId, comparison, combinedResult);
+                log.info("exercises {}", exercises);
+                return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
+            } else {
+                return ResponseEntity.badRequest().build();
             }
-
-            exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
-            log.info("Exercise {} {} {}", exerciseId, comparison, result);
-            log.info("exercises {}", exercises);
-            return ResponseEntity.ok(new ExerciseResponse(exerciseId, comparison, UNSOLVED));
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -270,8 +302,12 @@ public class ExerciseGeneratorControllerV6 {
         SUM, DIFFERENCE, MULTIPLICATION, DIVISION, COMPARISON
     }
 
-    public enum ExerciseSumIncognitePosition {
+    public enum ExerciseSumPosition {
         LEFT, CENTER, RIGHT;
+    }
+
+    public enum ExerciseComparison {
+        ONE, TWO;
     }
     
     public enum Status { 
