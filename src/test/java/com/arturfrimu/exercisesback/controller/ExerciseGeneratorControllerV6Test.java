@@ -34,6 +34,7 @@ class ExerciseGeneratorControllerV6Test {
     @LocalServerPort
     private int PORT;
 
+
     @Autowired
     private BaseRestTemplate restTemplate;
 
