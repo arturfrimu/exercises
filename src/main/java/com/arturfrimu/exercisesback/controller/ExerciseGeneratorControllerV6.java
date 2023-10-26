@@ -194,7 +194,7 @@ public class ExerciseGeneratorControllerV6 {
                     result2 = "<";
                 }
 
-                String combinedResult = result1 + " | "  + result2;
+                String combinedResult = result1 + "|"  + result2;
 
                 exercises.put(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, comparison, combinedResult);

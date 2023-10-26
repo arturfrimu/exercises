@@ -112,10 +112,10 @@ class ExerciseGeneratorControllerV6Test {
                 Arguments.arguments("comparison", "ONE", new int[]{1, 0}, "1 ? 0", ">"),
                 Arguments.arguments("comparison", "ONE", new int[]{0, 1}, "0 ? 1", "<"),
 
-                Arguments.arguments("comparison", "TWO", new int[]{0, 1, 2}, "0 ? 1 ? 2", "< | <"),
-                Arguments.arguments("comparison", "TWO", new int[]{0, 1, 0}, "0 ? 1 ? 0", "< | >"),
-                Arguments.arguments("comparison", "TWO", new int[]{2, 1, 0}, "2 ? 1 ? 0", "> | >"),
-                Arguments.arguments("comparison", "TWO", new int[]{2, 1, 2}, "2 ? 1 ? 2", "> | <")
+                Arguments.arguments("comparison", "TWO", new int[]{0, 1, 2}, "0 ? 1 ? 2", "<|<"),
+                Arguments.arguments("comparison", "TWO", new int[]{0, 1, 0}, "0 ? 1 ? 0", "<|>"),
+                Arguments.arguments("comparison", "TWO", new int[]{2, 1, 0}, "2 ? 1 ? 0", ">|>"),
+                Arguments.arguments("comparison", "TWO", new int[]{2, 1, 2}, "2 ? 1 ? 2", ">|<")
         );
     }
 
