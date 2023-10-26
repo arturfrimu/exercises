@@ -30,8 +30,9 @@ public class ExerciseGeneratorControllerV6 {
             @RequestParam(name = "type") String type,
             @RequestParam(name = "position") String position,
             @RequestParam(name = "min") Integer min,
-            @RequestParam(name = "max") Integer max
-    ) {
+            @RequestParam(name = "max") Integer max)
+
+    {
         log.info("Ai intrat in generateExercise cu tip : {} si pozitia : {}", type, position);
 
         int first = randomIntGenerator.generate(min, max);
