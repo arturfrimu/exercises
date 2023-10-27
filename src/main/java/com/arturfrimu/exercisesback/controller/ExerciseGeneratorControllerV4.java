@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV4.ExerciseSumIncognitePosition.*;
+import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV4.ExerciseType.*;
+
 @CrossOrigin("*")
 @Slf4j
 @RestController
@@ -35,8 +38,8 @@ public class ExerciseGeneratorControllerV4 {
 
         int temp = 0;
 
-        if (ExerciseType.SUM.name().equalsIgnoreCase(type)) {
-            if (ExerciseSumIncognitePosition.RIGHT.name().equalsIgnoreCase(position)) {
+        if (SUM.name().equalsIgnoreCase(type)) {
+            if (RIGHT.name().equalsIgnoreCase(position)) {
 
                 if (first > second) {
                     temp = first;
@@ -48,7 +51,7 @@ public class ExerciseGeneratorControllerV4 {
                 int result = first + second;
                 exercises.put(exerciseId, new Exercise(exerciseId, sum, result));
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum));
-            } else if (ExerciseSumIncognitePosition.CENTER.name().equalsIgnoreCase(position)) {
+            } else if (CENTER.name().equalsIgnoreCase(position)) {
 
                 if (first > second) {
                     temp = first;
@@ -60,7 +63,7 @@ public class ExerciseGeneratorControllerV4 {
                 int result = second - first;
                 exercises.put(exerciseId, new Exercise(exerciseId, sum, result));
                 return ResponseEntity.ok(new ExerciseResponse(exerciseId, sum));
-            } else if (ExerciseSumIncognitePosition.LEFT.name().equalsIgnoreCase(position)) {
+            } else if (LEFT.name().equalsIgnoreCase(position)) {
 
                 if (first > second) {
                     temp = first;
@@ -75,7 +78,7 @@ public class ExerciseGeneratorControllerV4 {
             } else {
                 return ResponseEntity.badRequest().build();
             }
-        } else if (ExerciseType.DIFFERENCE.name().equalsIgnoreCase(type)) {
+        } else if (DIFFERENCE.name().equalsIgnoreCase(type)) {
 
             if (second > first) {
                 temp = first;
@@ -87,12 +90,12 @@ public class ExerciseGeneratorControllerV4 {
             int result = first - second;
             exercises.put(exerciseId, new Exercise(exerciseId, difference, result));
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, difference));
-        } else if (ExerciseType.MULTIPLICATION.name().equalsIgnoreCase(type)) {
+        } else if (MULTIPLICATION.name().equalsIgnoreCase(type)) {
             String multiplication = first + " * " + second + " = ?";
             int result = first * second;
             exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result));
             return ResponseEntity.ok(new ExerciseResponse(exerciseId, multiplication));
-        } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(type)) {
+        } else if (DIVISION.name().equalsIgnoreCase(type)) {
             String division = first + " / " + second + " = ?";
             int result = first / second;
             exercises.put(exerciseId, new Exercise(exerciseId, division, result));
