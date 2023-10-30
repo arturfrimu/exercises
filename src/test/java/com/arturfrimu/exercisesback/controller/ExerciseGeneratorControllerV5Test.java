@@ -3,6 +3,8 @@ package com.arturfrimu.exercisesback.controller;
 import com.arturfrimu.exercisesback.common.BaseRestTemplate;
 import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV5.VerifyRequest;
+import com.arturfrimu.exercisesback.service.RandomIntGenerator;
+import com.arturfrimu.exercisesback.service.RandomNumberGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -83,8 +85,8 @@ class ExerciseGeneratorControllerV5Test {
         String BASE_URL = "http://localhost:%d/api/v5/exercise-generator?type=%s&position=%s&min=%d&max=%d";
 
         for (int i = 0; i < 10; i++) {
-            Integer first = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
-            Integer second = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
+            Integer first = new RandomIntGenerator().generate(1, 10);
+            Integer second = new RandomIntGenerator().generate(1, 10);
             when(randomNumberGeneratorMock.generate(anyInt(), anyInt())).thenReturn(first).thenReturn(second);
             ResponseEntity<ExerciseResponse> generatedExercice = restTemplate.exchange(get(BASE_URL.formatted(PORT, "sum", "left", 1, 10)).build(), EXERCISE);
         }
