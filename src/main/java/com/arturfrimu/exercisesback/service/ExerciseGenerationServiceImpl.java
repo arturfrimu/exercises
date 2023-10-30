@@ -288,5 +288,15 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
         return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage);
     }
+
+    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
+    public void put(Map<UUID, Exercise> map) {
+        exercises.putAll(map);
+    }
+
+    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
+    public void clear() {
+        exercises.clear();
+    }
 }
 
