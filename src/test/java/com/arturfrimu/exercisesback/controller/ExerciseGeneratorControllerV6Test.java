@@ -1,9 +1,11 @@
 package com.arturfrimu.exercisesback.controller;
 
 import com.arturfrimu.exercisesback.common.BaseRestTemplate;
-import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.ExerciseResponse;
-import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.PercentageResponse;
-import com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.VerifyRequest;
+import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
+import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
+import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
+import com.arturfrimu.exercisesback.service.RandomIntGenerator;
+import com.arturfrimu.exercisesback.service.RandomNumberGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.Status.CORRECT;
-import static com.arturfrimu.exercisesback.controller.ExerciseGeneratorControllerV6.Status.UNSOLVED;
+import static com.arturfrimu.exercisesback.controller.enumeration.Status.CORRECT;
+import static com.arturfrimu.exercisesback.controller.enumeration.Status.UNSOLVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -124,8 +126,8 @@ class ExerciseGeneratorControllerV6Test {
         String BASE_URL = "http://localhost:%d/api/v6/exercise-generator?type=%s&position=%s&min=%d&max=%d";
 
         for (int i = 0; i < 10; i++) {
-            Integer first = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
-            Integer second = new RandomNumberGenerator.RandomIntGenerator().generate(1, 10);
+            Integer first = new RandomIntGenerator().generate(1, 10);
+            Integer second = new RandomIntGenerator().generate(1, 10);
             when(randomNumberGeneratorMock.generate(anyInt(), anyInt())).thenReturn(first).thenReturn(second);
             ResponseEntity<ExerciseResponse> generatedExercice = restTemplate.exchange(get(BASE_URL.formatted(PORT, "sum", "left", 1, 10)).build(), EXERCISE);
         }
@@ -141,8 +143,8 @@ class ExerciseGeneratorControllerV6Test {
         String GENERATE_EXERCISES_URL = "http://localhost:%d/api/v6/exercise-generator?type=%s&position=%s&min=%d&max=%d";
 
         for (int i = 0; i < 9; i++) {
-            Integer first = new RandomNumberGenerator.RandomIntGenerator().generate(1, 3);
-            Integer second = new RandomNumberGenerator.RandomIntGenerator().generate(1, 3);
+            Integer first = new RandomIntGenerator().generate(1, 3);
+            Integer second = new RandomIntGenerator().generate(1, 3);
             when(randomNumberGeneratorMock.generate(anyInt(), anyInt())).thenReturn(first).thenReturn(second);
             ResponseEntity<ExerciseResponse> generatedExercise = restTemplate.exchange(get(GENERATE_EXERCISES_URL.formatted(PORT, "sum", "left", 1, 3)).build(), EXERCISE);
 
@@ -151,7 +153,7 @@ class ExerciseGeneratorControllerV6Test {
             String BASE_URL_VERIFY = "http://localhost:%d/api/v6/exercise-generator";
             restTemplate.exchange(
                     post(BASE_URL_VERIFY.formatted(PORT))
-                            .body(new VerifyRequest(generatedExercise.getBody().id(), String.valueOf(new RandomNumberGenerator.RandomIntGenerator().generate(1, 3)))), VERIFY);
+                            .body(new VerifyRequest(generatedExercise.getBody().id(), String.valueOf(new RandomIntGenerator().generate(1, 3)))), VERIFY);
         }
 
         String PERCENTAGE_BASE_URL = "http://localhost:%d/api/v6/exercise-generator/percentage";

@@ -1,6 +1,7 @@
 package com.arturfrimu.exercisesback.controller;
 
 import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
+import com.arturfrimu.exercisesback.service.RandomNumberGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
