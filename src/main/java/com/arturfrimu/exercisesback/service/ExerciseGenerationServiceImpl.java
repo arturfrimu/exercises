@@ -9,6 +9,7 @@ import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,12 @@ import static java.math.MathContext.DECIMAL32;
 
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
 
-    @Autowired
-    private RandomNumberGenerator<Integer> randomIntGenerator;
+
+    private final RandomNumberGenerator<Integer> randomIntGenerator;
 
     private static final Map<UUID, Exercise> exercises = new HashMap<>();
 

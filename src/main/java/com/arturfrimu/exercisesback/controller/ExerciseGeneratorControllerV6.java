@@ -20,8 +20,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v6/exercise-generator")
 public class ExerciseGeneratorControllerV6 {
-    @Autowired
-    private ExerciseGenerationService exerciseGenerationService;
+
+    private final ExerciseGenerationService exerciseGenerationService;
 
     @GetMapping
     public ResponseEntity<ExerciseResponse> generateExercise(
