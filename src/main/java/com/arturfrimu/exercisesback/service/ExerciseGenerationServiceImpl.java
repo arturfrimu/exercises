@@ -270,17 +270,22 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                                 Collectors.toList())));
 
         BigDecimal totalPercentage = BigDecimal.valueOf(100);
+        BigDecimal correctPercentage = BigDecimal.ZERO;
+        BigDecimal errorPercentage = BigDecimal.ZERO;
 
-        int totalCorrectExercises = percentage.get(CORRECT).size();
-        int totalErrorExercises = percentage.get(ERROR).size();
+        if (percentage.containsKey(CORRECT) && !percentage.get(CORRECT).isEmpty()) {
+            int totalCorrectExercises = percentage.get(CORRECT).size();
+            correctPercentage = BigDecimal.valueOf(totalCorrectExercises)
+                    .multiply(totalPercentage)
+                    .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
+        }
 
-        BigDecimal correctPercentage = BigDecimal.valueOf(totalCorrectExercises)
-                .multiply(totalPercentage)
-                .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
-
-        BigDecimal errorPercentage = BigDecimal.valueOf(totalErrorExercises)
-                .multiply(totalPercentage)
-                .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
+        if (percentage.containsKey(ERROR) && !percentage.get(ERROR).isEmpty()) {
+            int totalErrorExercises = percentage.get(ERROR).size();
+            errorPercentage = BigDecimal.valueOf(totalErrorExercises)
+                    .multiply(totalPercentage)
+                    .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
+        }
 
         String correctExercisesPercent = correctPercentage.toString();
         String errorExercisesPercent = errorPercentage.toString();
@@ -289,12 +294,10 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage);
     }
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     public void put(Map<UUID, Exercise> map) {
         exercises.putAll(map);
     }
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     public void clear() {
         exercises.clear();
     }
