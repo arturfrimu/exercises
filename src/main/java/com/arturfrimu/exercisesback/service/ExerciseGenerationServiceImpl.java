@@ -30,6 +30,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
     private final RandomNumberGenerator<Integer> randomIntGenerator;
 
+    // TODO: 31.10.2023  Aceasta mapa la moment ne inlocuieste baza de date pentru exercitiile noastre
+    // TODO: 31.10.2023 Nu este okay ca ea sa fie create in interiorul serviciului pentur ca vrem s-o putem apela si din alte servicii
+    // TODO: 31.10.2023 Trebuie mutata in alta parte cum ar fi un Repository sau DAO pe care sa-l puntem injecta in servicii si sa folosim aceasta mapa
     private static final Map<UUID, Exercise> exercises = new HashMap<>();
 
     @Override
