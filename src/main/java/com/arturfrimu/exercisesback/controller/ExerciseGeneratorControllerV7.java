@@ -3,13 +3,15 @@ package com.arturfrimu.exercisesback.controller;
 import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
+import com.arturfrimu.exercisesback.repository.AbcRepository;
 import com.arturfrimu.exercisesback.service.ExerciseGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -17,17 +19,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v6/exercise-generator")
-public class ExerciseGeneratorControllerV6 {
+@RequestMapping("/api/v7/exercise-generator")
+public class ExerciseGeneratorControllerV7 {
 
     private final ExerciseGenerationService exerciseGenerationService;
 
+    @PostMapping("/config")
+    public ResponseEntity<?> config(@RequestBody AbcRepository.Abc configuration) {
+        exerciseGenerationService.setConfiguration(configuration);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
-    public ResponseEntity<ExerciseResponse> generateExercise(
-            @RequestParam(name = "type") String type,
-            @RequestParam(name = "position") String position,
-            @RequestParam(name = "min") Integer min,
-            @RequestParam(name = "max") Integer max) {
+    public ResponseEntity<ExerciseResponse> generateExercise() {
         ExerciseResponse exerciseResponse = exerciseGenerationService.generateExercise();
 
         return ResponseEntity.ok(exerciseResponse);
