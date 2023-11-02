@@ -22,10 +22,8 @@ public interface ExerciseGenerationService {
 
     PercentageResponse getPercentage();
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     void put(Map<UUID, Exercise> map);
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     void clear();
 }
 
