@@ -1,5 +1,6 @@
 package com.arturfrimu.exercisesback.service;
 
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseComparison;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseSumPosition;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseType;
@@ -17,22 +18,20 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
 import static java.math.MathContext.DECIMAL32;
-
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
-
-
     private final RandomNumberGenerator<Integer> randomIntGenerator;
 
-    // TODO: 31.10.2023  Aceasta mapa la moment ne inlocuieste baza de date pentru exercitiile noastre
-    // TODO: 31.10.2023 Nu este okay ca ea sa fie create in interiorul serviciului pentur ca vrem s-o putem apela si din alte servicii
-    // TODO: 31.10.2023 Trebuie mutata in alta parte cum ar fi un Repository sau DAO pe care sa-l puntem injecta in servicii si sa folosim aceasta mapa
+    @Autowired
+    private ExerciseDAOInterface exerciseDAO;
+  
     private static final Map<UUID, Exercise> exercises = new HashMap<>();
 
     @Override
@@ -45,7 +44,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
         UUID exerciseId = UUID.randomUUID();
 
-        while (exercises.containsKey(exerciseId)) {
+        while (exerciseDAO.getExercise(exerciseId) != null) {
             exerciseId = UUID.randomUUID();
         }
 
@@ -56,9 +55,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String sum = first + " + " + second + " = ?";
                 String result = String.valueOf(first + second);
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(position)) {
@@ -71,9 +70,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String sum = first + " + ? = " + second;
                 String result = String.valueOf(second - first);
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(position)) {
@@ -86,9 +85,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String sum = "? + " + first + " = " + second;
                 String result = String.valueOf(second - first);
-                exercises.put(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else {
@@ -107,9 +106,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String difference = first + " - " + second + " = ?";
                 String result = String.valueOf(first - second);
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(position)) {
@@ -122,18 +121,18 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String difference = first + " - ? = " + second;
                 String result = String.valueOf(first - second);
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(position)) {
 
                 String difference = "? - " + first + " = " + second;
                 String result = String.valueOf(first + second);
-                exercises.put(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else {
@@ -144,9 +143,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
             String multiplication = first + " * " + second + " = ?";
             String result = String.valueOf(first * second);
-            exercises.put(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
+            exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, multiplication, result);
-            log.info("exercises {}", exercises);
+            log.info("exercises {}", exerciseDAO);
             return new ExerciseResponse(exerciseId, multiplication, UNSOLVED);
 
         } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(type)) {
@@ -159,9 +158,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
             String division = first + " / " + second + " = ?";
             String result = String.valueOf(first / second);
-            exercises.put(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
+            exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
             log.info("Exercise {} {} {}", exerciseId, division, result);
-            log.info("exercises {}", exercises);
+            log.info("exercises {}", exerciseDAO);
             return new ExerciseResponse(exerciseId, division, UNSOLVED);
 
         } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(type)) {
@@ -177,9 +176,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                     result = "<";
                 }
 
-                exercises.put(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, comparison, result);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
 
 
@@ -205,9 +204,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
                 String combinedResult = result1 + "|" + result2;
 
-                exercises.put(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
+                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
                 log.info("Exercise {} {} {}", exerciseId, comparison, combinedResult);
-                log.info("exercises {}", exercises);
+                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
             } else {
                 throw new RuntimeException("Poziția specificată nu este recunoscută: " + position);
@@ -222,9 +221,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
     @Override
     public boolean verifyExercise(VerifyRequest verifyRequest) {
         log.info("verifyRequest {}", verifyRequest);
-        log.info("exercises {}", exercises);
+        log.info("exercises {}", exerciseDAO);
 
-        Exercise exercise = exercises.get(verifyRequest.id());
+        Exercise exercise = exerciseDAO.getExercise(verifyRequest.id());
 
         if (Objects.isNull(exercise)) {
             throw new ResourceNotFoundException("Exercise not found with id: %s".formatted(verifyRequest.id()));
@@ -234,37 +233,37 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
         if (isCorrect) {
             Exercise correctExercise = exercise.markAs(CORRECT);
-            exercises.put(correctExercise.id(), correctExercise);
+            exerciseDAO.putExercise(correctExercise.id(), correctExercise);
         } else {
             Exercise errorExercise = exercise.markAs(ERROR);
-            exercises.put(errorExercise.id(), errorExercise);
+            exerciseDAO.putExercise(errorExercise.id(), errorExercise);
         }
         return isCorrect;
     }
 
     @Override
     public List<ExerciseResponse> getAllExercises() {
-        List<ExerciseResponse> allExercises = exercises.values().stream()
+        List<Exercise> allExercises = exerciseDAO.getAllExercises();
+        return allExercises.stream()
                 .map(exercise -> new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()))
                 .toList();
-        return allExercises;
     }
 
     @Override
     public ExerciseResponse getExerciseById(UUID id) {
-        Exercise exercise = exercises.get(id);
+        Exercise exercise = exerciseDAO.getExercise(id);
         return new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status());
     }
 
     @Override
     public PercentageResponse getPercentage() {
-        int exercisesSize = exercises.size();
+        int exercisesSize = exerciseDAO.size();
 
         if (exercisesSize == 0) {
             return new PercentageResponse("0", "0", "0");
         }
 
-        Map<Status, List<Exercise>> percentage = exercises.values()
+        Map<Status, List<Exercise>> percentage = exerciseDAO.values()
                 .stream()
                 .collect(Collectors.groupingBy(
                         Exercise::status,
@@ -296,13 +295,17 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
         return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage);
     }
+
+    @Override
     // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     public void put(Map<UUID, Exercise> map) {
-        exercises.putAll(map);
+        exerciseDAO.putAll(map);
     }
+
     // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
+    @Override
     public void clear() {
-        exercises.clear();
+        exerciseDAO.clear();
     }
 }
 
