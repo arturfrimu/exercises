@@ -10,7 +10,6 @@ import java.util.UUID;
 public interface ExerciseDAOInterface {
     Map<UUID, Exercise> getExercises();
 
-
     void putExercise(UUID id, Exercise exercise);
 
     public List<Exercise> getAllExercises();
@@ -18,8 +17,6 @@ public interface ExerciseDAOInterface {
     Exercise getExercise(UUID id);
 
     int size();
-
-    Collection<Exercise> values();
 
     void putAll(Map<UUID, Exercise> map);
 
