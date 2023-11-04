@@ -28,11 +28,7 @@ import static java.math.MathContext.DECIMAL32;
 @Service
 public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
     private final RandomNumberGenerator<Integer> randomIntGenerator;
-
-    @Autowired
-    private ExerciseDAOInterface exerciseDAO;
-  
-    private static final Map<UUID, Exercise> exercises = new HashMap<>();
+    private final ExerciseDAOInterface exerciseDAO;
 
     @Override
     public ExerciseResponse generateExercise(String type, String position, Integer min, Integer max) {
@@ -263,7 +259,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
             return new PercentageResponse("0", "0", "0");
         }
 
-        Map<Status, List<Exercise>> percentage = exerciseDAO.values()
+        Map<Status, List<Exercise>> percentage = exerciseDAO.getAllExercises()
                 .stream()
                 .collect(Collectors.groupingBy(
                         Exercise::status,
