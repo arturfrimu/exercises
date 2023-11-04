@@ -9,18 +9,18 @@ import java.util.List;
 @Getter
 @Setter
 @Repository
-public class AbcRepository {
+public class ExerciseConfigurationRepository {
 
-    private Abc abc = new Abc(List.of("sum"), List.of("center"), new Range(1, 10));
+    private ExerciseConfiguration exerciseConfiguration = new ExerciseConfiguration(List.of("sum"), List.of("center"), new Range(1, 10));
 
-    public record Abc(
+    public record ExerciseConfiguration(
             List<String> type,
             List<String> position,
             Range range
     ) {
     }
 
-    public record CurrentAbc(
+    public record CurrentExerciseConfiguration(
             String type,
             String position,
             Integer min,

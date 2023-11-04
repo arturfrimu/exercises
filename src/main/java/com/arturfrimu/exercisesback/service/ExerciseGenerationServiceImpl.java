@@ -10,46 +10,43 @@ import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.CurrentExerciseConfiguration;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
 import static java.math.MathContext.DECIMAL32;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
-    private final RandomNumberGenerator<Integer> randomIntGenerator;
 
-    private final AbcRepository abcRepository;
+    private final ExerciseDAOInterface exerciseDAO;
+    private final RandomNumberGenerator<Integer> randomIntGenerator;
+    private final ExerciseConfigurationService exerciseConfigurationService;
 
     @Override
-    public void setConfiguration(AbcRepository.Abc newConfiguration) {
-        abcRepository.setAbc(newConfiguration);
+    public void setConfiguration(ExerciseConfiguration newConfiguration) {
+        exerciseConfigurationService.setConfiguration(newConfiguration);
     }
-
-    // TODO: 31.10.2023  Aceasta mapa la moment ne inlocuieste baza de date pentru exercitiile noastre
-    // TODO: 31.10.2023 Nu este okay ca ea sa fie create in interiorul serviciului pentur ca vrem s-o putem apela si din alte servicii
-    // TODO: 31.10.2023 Trebuie mutata in alta parte cum ar fi un Repository sau DAO pe care sa-l puntem injecta in servicii si sa folosim aceasta mapa
-    private static final Map<UUID, Exercise> exercises = new HashMap<>();
-    @Autowired
-    private ExerciseDAOInterface exerciseDAO;
-
-    private final AbcRandom abcRandom;
 
     @Override
     public ExerciseResponse generateExercise() {
-        AbcRepository.CurrentAbc abc = abcRandom.getCurrentAbc();
+        CurrentExerciseConfiguration currentExerciseConfiguration = exerciseConfigurationService.getCurrentExerciseConfiguration();
 
-        int min = abc.min();
-        int max = abc.max();
+        int min = currentExerciseConfiguration.min();
+        int max = currentExerciseConfiguration.max();
 
         if (min > max) throw new RuntimeException("Min nu poate fi mai mare ca max");
 
@@ -64,17 +61,15 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
         int temp;
 
-        if (ExerciseType.SUM.name().equalsIgnoreCase(abc.type())) {
-            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(abc.position())) {
+        if (ExerciseType.SUM.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
+            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 String sum = first + " + " + second + " = ?";
                 String result = String.valueOf(first + second);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
-            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(abc.position())) {
+            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 if (first > second) {
                     temp = first;
@@ -85,11 +80,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 String sum = first + " + ? = " + second;
                 String result = String.valueOf(second - first);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
-            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(abc.position())) {
+            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 if (first > second) {
                     temp = first;
@@ -100,17 +93,15 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 String sum = "? + " + first + " = " + second;
                 String result = String.valueOf(second - first);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, sum, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else {
-                throw new RuntimeException("Poziția specificată nu este recunoscută: " + abc.position());
+                throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
 
             }
 
-        } else if (ExerciseType.DIFFERENCE.name().equalsIgnoreCase(abc.type())) {
-            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(abc.position())) {
+        } else if (ExerciseType.DIFFERENCE.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
+            if (ExerciseSumPosition.RIGHT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 if (second > first) {
                     temp = first;
@@ -121,11 +112,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 String difference = first + " - " + second + " = ?";
                 String result = String.valueOf(first - second);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
-            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(abc.position())) {
+            } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 if (second > first) {
                     temp = first;
@@ -136,33 +125,27 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 String difference = first + " - ? = " + second;
                 String result = String.valueOf(first - second);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
-            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(abc.position())) {
+            } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 String difference = "? - " + first + " = " + second;
                 String result = String.valueOf(first + second);
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, difference, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else {
-                throw new RuntimeException("Poziția specificată nu este recunoscută: " + abc.position());
+                throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
 
             }
-        } else if (ExerciseType.MULTIPLICATION.name().equalsIgnoreCase(abc.type())) {
+        } else if (ExerciseType.MULTIPLICATION.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
 
             String multiplication = first + " * " + second + " = ?";
             String result = String.valueOf(first * second);
             exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
-            log.info("Exercise {} {} {}", exerciseId, multiplication, result);
-            log.info("exercises {}", exerciseDAO);
             return new ExerciseResponse(exerciseId, multiplication, UNSOLVED);
 
-        } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(abc.type())) {
+        } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
 
             if (first < second) {
                 temp = first;
@@ -173,13 +156,11 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
             String division = first + " / " + second + " = ?";
             String result = String.valueOf(first / second);
             exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
-            log.info("Exercise {} {} {}", exerciseId, division, result);
-            log.info("exercises {}", exerciseDAO);
             return new ExerciseResponse(exerciseId, division, UNSOLVED);
 
-        } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(abc.type())) {
+        } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
 
-            if (ExerciseComparison.ONE.name().equalsIgnoreCase(abc.position())) {
+            if (ExerciseComparison.ONE.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
                 String comparison = first + " ? " + second;
 
                 String result = "=";
@@ -191,12 +172,9 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 }
 
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, comparison, result);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
 
-
-            } else if (ExerciseComparison.TWO.name().equalsIgnoreCase(abc.position())) {
+            } else if (ExerciseComparison.TWO.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 int third = randomIntGenerator.generate(min, max);
                 String comparison = first + " ? " + second + " ? " + third;
@@ -219,24 +197,19 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
                 String combinedResult = result1 + "|" + result2;
 
                 exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
-                log.info("Exercise {} {} {}", exerciseId, comparison, combinedResult);
-                log.info("exercises {}", exerciseDAO);
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
             } else {
-                throw new RuntimeException("Poziția specificată nu este recunoscută: " + abc.position());
+                throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
 
             }
         } else {
-            throw new RuntimeException("Poziția specificată nu este recunoscută: " + abc.position());
+            throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
 
         }
     }
 
     @Override
     public boolean verifyExercise(VerifyRequest verifyRequest) {
-        log.info("verifyRequest {}", verifyRequest);
-        log.info("exercises {}", exerciseDAO);
-
         Exercise exercise = exerciseDAO.getExercise(verifyRequest.id());
 
         if (Objects.isNull(exercise)) {
@@ -310,8 +283,8 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage);
     }
 
-    @Override
     // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
+    @Override
     public void put(Map<UUID, Exercise> map) {
         exerciseDAO.putAll(map);
     }
