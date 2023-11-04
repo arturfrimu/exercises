@@ -2,7 +2,6 @@ package com.arturfrimu.exercisesback.DAO;
 
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

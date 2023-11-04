@@ -4,6 +4,7 @@ import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
 @Repository
 public class ExerciseDAO implements ExerciseDAOInterface {
     private static final Map<UUID, Exercise> exercises = new HashMap<>();
@@ -21,7 +22,6 @@ public class ExerciseDAO implements ExerciseDAOInterface {
     public List<Exercise> getAllExercises() {
         return new ArrayList<>(exercises.values());
     }
-
 
     @Override
     public Exercise getExercise(UUID id) {
