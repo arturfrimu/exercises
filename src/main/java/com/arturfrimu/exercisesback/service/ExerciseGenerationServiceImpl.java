@@ -34,13 +34,15 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
 
     private final ExerciseDAOInterface exerciseDAO;
     private final RandomNumberGenerator<Integer> randomIntGenerator;
+    private final ExerciseDAOInterface exerciseDAO;
+
     private final ExerciseConfigurationService exerciseConfigurationService;
 
     @Override
     public void setConfiguration(ExerciseConfiguration newConfiguration) {
         exerciseConfigurationService.setConfiguration(newConfiguration);
     }
-
+  
     @Override
     public ExerciseResponse generateExercise() {
         CurrentExerciseConfiguration currentExerciseConfiguration = exerciseConfigurationService.getCurrentExerciseConfiguration();
@@ -250,7 +252,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
             return new PercentageResponse("0", "0", "0");
         }
 
-        Map<Status, List<Exercise>> percentage = exerciseDAO.values()
+        Map<Status, List<Exercise>> percentage = exerciseDAO.getAllExercises()
                 .stream()
                 .collect(Collectors.groupingBy(
                         Exercise::status,
