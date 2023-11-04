@@ -28,8 +28,11 @@ import static java.math.MathContext.DECIMAL32;
 @Service
 public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
     private final RandomNumberGenerator<Integer> randomIntGenerator;
+
     @Autowired
     private ExerciseDAOInterface exerciseDAO;
+  
+    private static final Map<UUID, Exercise> exercises = new HashMap<>();
 
 
     @Override
