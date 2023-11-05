@@ -11,8 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Service
+/**
+ * @see <a href="https://www.baeldung.com/java-interface-segregation">SOLID Interface Segregation</a>
+ */
+@Service // TODO: 05.11.2023 Delete from interface
 public interface ExerciseGenerationService {
+
+    // TODO: 05.11.2023 Prea multe metode in aceasta interfata.
+    //  Grupeazale dupa logica si extragele creaza mai multe interfete mai mici
+    //  Pentru fiecare metoda o interfata aparte
+    //  Exemplu de denumiri de interfete:
+    //  - SetExerciseConfigurationService
+    //   - GenerateExerciseService
+    //   - ListAllExercisesService
+    //   - FindExerciseService
+    //   - FindPercentageExerciseService
+
     void setConfiguration(ExerciseConfigurationRepository.ExerciseConfiguration newConfiguration);
 
     ExerciseResponse generateExercise();
@@ -25,10 +39,8 @@ public interface ExerciseGenerationService {
 
     PercentageResponse getPercentage();
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     void put(Map<UUID, Exercise> map);
 
-    // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
     void clear();
 }
 
