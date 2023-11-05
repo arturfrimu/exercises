@@ -35,8 +35,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
     private final ExerciseDAOInterface exerciseDAO;
     private final RandomNumberGenerator<Integer> randomIntGenerator;
     private final ExerciseConfigurationService exerciseConfigurationService;
-    private final ExerciseDAOInterface exerciseDAO;
-  
+
     @Override
     public void setConfiguration(ExerciseConfiguration newConfiguration) {
         exerciseConfigurationService.setConfiguration(newConfiguration);
