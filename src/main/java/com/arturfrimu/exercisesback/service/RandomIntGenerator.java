@@ -9,6 +9,11 @@ public
 class RandomIntGenerator implements RandomNumberGenerator<Integer> {
     public static final Random random = new Random();
 
+    /**
+     * @param min 0
+     * @param max 3
+     * @return 0 OR 1 OR 2 OR 3
+     */
     @Override
     public Integer generate(int min, int max) {
         return random.nextInt((max - min) + 1) + min;
