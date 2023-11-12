@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,34 +37,33 @@ class ExerciseGenerationServiceImplTest {
 
         PercentageResponse percentage = exerciseGenerationService.getPercentage();
 
-        assertThat(percentage).isNotNull();
-        assertThat(percentage).isEqualTo(percentageResponse);
+        assertThat(percentage).isNotNull().isEqualTo(percentageResponse);
     }
 
     public static Stream<Arguments> getPercentageArgumentsProvider() {
         return Stream.of(
-                Arguments.of(new HashMap<>(), new PercentageResponse("0", "0", "0")),
-                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED)), new PercentageResponse("0", "0", "100")),
-                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)), new PercentageResponse("100", "0", "0")),
-                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR)), new PercentageResponse("0", "100", "0")),
+                Arguments.of(new HashMap<>(), new PercentageResponse("0", "0", "0", 0, 0, 0)),
+                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED)), new PercentageResponse("0", "0", "100", 0, 0, 1)),
+                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)), new PercentageResponse("100", "0", "0", 1, 0, 1)),
+                Arguments.of(Map.of(UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR)), new PercentageResponse("0", "100", "0", 0, 1, 1)),
                 Arguments.of(Map.of(
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR)
-                ), new PercentageResponse("50", "25", "25")),
+                ), new PercentageResponse("50", "25", "25", 2, 1, 3)),
                 Arguments.of(Map.of(
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)
-                ), new PercentageResponse("25", "50", "25")),
+                ), new PercentageResponse("25", "50", "25", 1, 2, 3)),
                 Arguments.of(Map.of(
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)
-                ), new PercentageResponse("25", "25", "50"))
+                ), new PercentageResponse("25", "25", "50", 1, 1, 3))
         );
     }
 }

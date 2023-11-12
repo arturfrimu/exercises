@@ -247,7 +247,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         int exercisesSize = exerciseDAO.size();
 
         if (exercisesSize == 0) {
-            return new PercentageResponse("0", "0", "0");
+            return new PercentageResponse("0", "0", "0", 0, 0, 0);
         }
 
         Map<Status, List<Exercise>> percentage = exerciseDAO.getAllExercises()
@@ -261,16 +261,19 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         BigDecimal totalPercentage = BigDecimal.valueOf(100);
         BigDecimal correctPercentage = BigDecimal.ZERO;
         BigDecimal errorPercentage = BigDecimal.ZERO;
+        int totalCorrectExercises = 0;
+        int totalErrorExercises = 0;
+        int totalExercises = percentage.size();
 
         if (percentage.containsKey(CORRECT)) {
-            int totalCorrectExercises = percentage.get(CORRECT).size();
+            totalCorrectExercises = percentage.get(CORRECT).size();
             correctPercentage = BigDecimal.valueOf(totalCorrectExercises)
                     .multiply(totalPercentage)
                     .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
         }
 
         if (percentage.containsKey(ERROR)) {
-            int totalErrorExercises = percentage.get(ERROR).size();
+            totalErrorExercises = percentage.get(ERROR).size();
             errorPercentage = BigDecimal.valueOf(totalErrorExercises)
                     .multiply(totalPercentage)
                     .divide(BigDecimal.valueOf(exercisesSize), DECIMAL32);
@@ -280,7 +283,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         String errorExercisesPercent = errorPercentage.toString();
         String unsolvedPercentage = totalPercentage.subtract(correctPercentage).subtract(errorPercentage).toString();
 
-        return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage);
+        return new PercentageResponse(correctExercisesPercent, errorExercisesPercent, unsolvedPercentage, totalCorrectExercises, totalErrorExercises, totalExercises);
     }
 
     // TODO: 30.10.2023 V-om sterge asta cand v-om adauga baza de date
