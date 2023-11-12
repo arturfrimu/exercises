@@ -263,7 +263,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
         BigDecimal errorPercentage = BigDecimal.ZERO;
         int totalCorrectExercises = 0;
         int totalErrorExercises = 0;
-        int totalExercises = percentage.size();
+        int totalExercises = exerciseDAO.getAllExercises().size();
 
         if (percentage.containsKey(CORRECT)) {
             totalCorrectExercises = percentage.get(CORRECT).size();

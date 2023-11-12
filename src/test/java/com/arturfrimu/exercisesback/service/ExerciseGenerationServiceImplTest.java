@@ -51,19 +51,19 @@ class ExerciseGenerationServiceImplTest {
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR)
-                ), new PercentageResponse("50", "25", "25", 2, 1, 3)),
+                ), new PercentageResponse("50", "25", "25", 2, 1, 4)),
                 Arguments.of(Map.of(
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)
-                ), new PercentageResponse("25", "50", "25", 1, 2, 3)),
+                ), new PercentageResponse("25", "50", "25", 1, 2, 4)),
                 Arguments.of(Map.of(
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", UNSOLVED),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", ERROR),
                         UUID.randomUUID(), new Exercise(UUID.randomUUID(), "", "", CORRECT)
-                ), new PercentageResponse("25", "25", "50", 1, 1, 3))
+                ), new PercentageResponse("25", "25", "50", 1, 1, 4))
         );
     }
 }
