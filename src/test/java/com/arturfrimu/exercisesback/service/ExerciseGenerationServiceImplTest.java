@@ -35,7 +35,7 @@ class ExerciseGenerationServiceImplTest {
     void getPercentage(final Map<UUID, Exercise> map, PercentageResponse percentageResponse) {
         exerciseGenerationService.put(map);
 
-        PercentageResponse percentage = exerciseGenerationService.getPercentage();
+        PercentageResponse percentage = exerciseGenerationService.getStatistic();
 
         assertThat(percentage).isNotNull().isEqualTo(percentageResponse);
     }

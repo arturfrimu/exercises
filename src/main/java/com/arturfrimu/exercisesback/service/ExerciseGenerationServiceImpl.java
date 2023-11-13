@@ -243,7 +243,7 @@ public class ExerciseGenerationServiceImpl implements ExerciseGenerationService 
     }
 
     @Override
-    public PercentageResponse getPercentage() {
+    public PercentageResponse getStatistic() {
         int exercisesSize = exerciseDAO.size();
 
         if (exercisesSize == 0) {

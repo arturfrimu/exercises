@@ -2,6 +2,7 @@ package com.arturfrimu.exercisesback.controller;
 
 import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
+import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
 import com.arturfrimu.exercisesback.service.ExerciseGenerationService;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,12 @@ public class ExerciseGeneratorControllerV7 {
     public ResponseEntity<ExerciseResponse> getById(@PathVariable UUID id) {
         ExerciseResponse exercise = exerciseGenerationService.getExerciseById(id);
         return ResponseEntity.ok(new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()));
+    }
+
+    @GetMapping("/statistic")
+    public ResponseEntity<PercentageResponse> getStatistic() {
+        PercentageResponse percentage = exerciseGenerationService.getStatistic();
+        return ResponseEntity.ok(percentage);
     }
 }
 

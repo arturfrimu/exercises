@@ -37,7 +37,7 @@ public interface ExerciseGenerationService {
 
     ExerciseResponse getExerciseById(UUID id);
 
-    PercentageResponse getPercentage();
+    PercentageResponse getStatistic();
 
     void put(Map<UUID, Exercise> map);
 
