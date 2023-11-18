@@ -4,7 +4,7 @@ import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
-import com.arturfrimu.exercisesback.service.ExerciseGenerationService;
+import com.arturfrimu.exercisesback.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/api/v7/exercise-generator")
 public class ExerciseGeneratorControllerV7 {
 
-    private final ExerciseGenerationService exerciseGenerationService;
+    private final ExerciseService exerciseGenerationService;
 
     @PostMapping("/config")
     public ResponseEntity<?> config(@RequestBody ExerciseConfiguration configuration) {

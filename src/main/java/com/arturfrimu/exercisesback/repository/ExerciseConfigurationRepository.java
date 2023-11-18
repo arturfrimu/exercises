@@ -16,8 +16,7 @@ public class ExerciseConfigurationRepository {
     public record ExerciseConfiguration(
             List<String> type,
             List<String> position,
-            Range range
-    ) {
+            Range range) {
     }
 
     public record CurrentExerciseConfiguration(
