@@ -30,7 +30,7 @@ import static java.math.MathContext.DECIMAL32;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ExerciseGenerationServiceImpl implements ExerciseGenerationService {
+public class ExerciseGenerationServiceImpl implements ExerciseService {
 
     private final ExerciseDAOInterface exerciseDAO;
     private final RandomNumberGenerator<Integer> randomIntGenerator;
