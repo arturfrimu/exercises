@@ -23,20 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ExerciseGenerationServiceImplTest {
 
     @Autowired
-    private ExerciseGenerationServiceImpl exerciseGenerationService;
+    private ExerciseManagementService exerciseManagementService;
+    @Autowired
+    private FindPercentageExerciseService findPercentageExerciseService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        exerciseGenerationService.clear();
+        exerciseManagementService.clear();
     }
 
     @MethodSource("getPercentageArgumentsProvider")
     @ParameterizedTest
     void getPercentage(final Map<UUID, Exercise> map, PercentageResponse percentageResponse) {
-        exerciseGenerationService.put(map);
+        exerciseManagementService.put(map);
 
-        PercentageResponse percentage = exerciseGenerationService.getPercentage();
+        PercentageResponse percentage = findPercentageExerciseService.getPercentage();
 
         assertThat(percentage).isNotNull();
         assertThat(percentage).isEqualTo(percentageResponse);

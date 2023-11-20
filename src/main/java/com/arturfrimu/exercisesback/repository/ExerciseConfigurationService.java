@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ExerciseConfigurationService {
-
     private final ExerciseConfigurationRepository exerciseConfigurationRepository;
     private final RandomNumberGenerator<Integer> numberGenerator;
 
