@@ -83,5 +83,6 @@ class ExerciseGeneratorControllerV7Test {
     }
 
     // @formatter:off
-    static final ParameterizedTypeReference<ExerciseResponse> EXERCISE = new ParameterizedTypeReference<>() {};
+    static final ParameterizedTypeReference<ExerciseResponse> EXERCISE = new ParameterizedTypeReference<>() {
+    };
 }
