@@ -5,5 +5,5 @@ import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import java.util.UUID;
 
 public interface FindExerciseService {
-    ExerciseResponse getExerciseById(UUID id);
+    ExerciseResponse findById(UUID id);
 }

@@ -28,7 +28,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
     private final ExerciseConfigurationService exerciseConfigurationService;
 
     @Override
-    public ExerciseResponse generateExercise() {
+    public ExerciseResponse generate() {
         ExerciseConfigurationRepository.CurrentExerciseConfiguration currentExerciseConfiguration =
                 exerciseConfigurationService.getCurrentExerciseConfiguration();
 
@@ -196,7 +196,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
     }
 
     @Override
-    public boolean verifyExercise(VerifyRequest verifyRequest) {
+    public boolean verify(VerifyRequest verifyRequest) {
         Exercise exercise = exerciseDAO.getExercise(verifyRequest.id());
 
         if (Objects.isNull(exercise)) {

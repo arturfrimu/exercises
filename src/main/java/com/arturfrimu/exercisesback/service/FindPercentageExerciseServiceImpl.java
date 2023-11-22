@@ -22,7 +22,7 @@ public class FindPercentageExerciseServiceImpl implements FindPercentageExercise
     private final ExerciseDAOInterface exerciseDAO;
 
     @Override
-    public PercentageResponse getPercentage() {
+    public PercentageResponse find() {
         int exercisesSize = exerciseDAO.size();
 
         if (exercisesSize == 0) {

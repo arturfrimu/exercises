@@ -14,7 +14,7 @@ public class FindExerciseServiceImpl implements FindExerciseService {
     private final ExerciseDAOInterface exerciseDAO;
 
     @Override
-    public ExerciseResponse getExerciseById(UUID id) {
+    public ExerciseResponse findById(UUID id) {
         Exercise exercise = exerciseDAO.getExercise(id);
         return new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status());
     }

@@ -26,9 +26,6 @@ class ExerciseGenerationServiceImplTest {
     @Autowired
     private FindPercentageExerciseService findPercentageExerciseService;
 
-    ExerciseGenerationServiceImplTest() {
-    }
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -40,7 +37,7 @@ class ExerciseGenerationServiceImplTest {
     void getPercentage(final Map<UUID, Exercise> map, PercentageResponse percentageResponse) {
         exerciseDAO.putAll(map);
 
-        PercentageResponse percentage = findPercentageExerciseService.getPercentage();
+        PercentageResponse percentage = findPercentageExerciseService.find();
 
         assertThat(percentage).isNotNull();
         assertThat(percentage).isEqualTo(percentageResponse);

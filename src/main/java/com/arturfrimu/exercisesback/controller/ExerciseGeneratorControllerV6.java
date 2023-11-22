@@ -30,33 +30,33 @@ public class ExerciseGeneratorControllerV6 {
             @RequestParam(name = "position") String position,
             @RequestParam(name = "min") Integer min,
             @RequestParam(name = "max") Integer max) {
-        ExerciseResponse exerciseResponse = generateExerciseService.generateExercise();
+        ExerciseResponse exerciseResponse = generateExerciseService.generate();
 
         return ResponseEntity.ok(exerciseResponse);
     }
 
     @PostMapping
     public ResponseEntity<Boolean> verify(@RequestBody VerifyRequest verifyRequest) {
-        boolean isCorrect = generateExerciseService.verifyExercise(verifyRequest);
+        boolean isCorrect = generateExerciseService.verify(verifyRequest);
 
         return ResponseEntity.ok(isCorrect);
     }
 
     @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseResponse>> getAll() {
-        List<ExerciseResponse> allExercises = listAllExercisesService.getAllExercises();
+        List<ExerciseResponse> allExercises = listAllExercisesService.getAll();
         return ResponseEntity.ok(allExercises);
     }
 
     @GetMapping("/exercises/{id}")
     public ResponseEntity<ExerciseResponse> getById(@PathVariable UUID id) {
-        ExerciseResponse exercise = findExerciseService.getExerciseById(id);
+        ExerciseResponse exercise = findExerciseService.findById(id);
         return ResponseEntity.ok(new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()));
     }
 
     @GetMapping("/percentage")
     public ResponseEntity<PercentageResponse> getPercentage() {
-        PercentageResponse percentageResponse = findPercentageExerciseService.getPercentage();
+        PercentageResponse percentageResponse = findPercentageExerciseService.find();
         return ResponseEntity.ok(percentageResponse);
     }
 }
