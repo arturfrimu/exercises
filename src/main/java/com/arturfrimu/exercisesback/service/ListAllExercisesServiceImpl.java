@@ -14,7 +14,7 @@ public class ListAllExercisesServiceImpl implements ListAllExercisesService {
     private final ExerciseDAOInterface exerciseDAO;
 
     @Override
-    public List<ExerciseResponse> getAllExercises() {
+    public List<ExerciseResponse> getAll() {
         List<Exercise> allExercises = exerciseDAO.getAllExercises();
         return allExercises.stream()
                 .map(exercise -> new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()))

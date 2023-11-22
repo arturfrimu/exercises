@@ -1,12 +1,12 @@
 package com.arturfrimu.exercisesback.service;
 
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,24 +21,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class ExerciseGenerationServiceImplTest {
-
     @Autowired
-    private ExerciseManagementService exerciseManagementService;
+    private ExerciseDAOInterface exerciseDAO;
     @Autowired
     private FindPercentageExerciseService findPercentageExerciseService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        exerciseManagementService.clear();
+        exerciseDAO.clear();
     }
 
     @MethodSource("getPercentageArgumentsProvider")
     @ParameterizedTest
     void getPercentage(final Map<UUID, Exercise> map, PercentageResponse percentageResponse) {
-        exerciseManagementService.put(map);
+        exerciseDAO.putAll(map);
 
-        PercentageResponse percentage = findPercentageExerciseService.getPercentage();
+        PercentageResponse percentage = findPercentageExerciseService.find();
 
         assertThat(percentage).isNotNull();
         assertThat(percentage).isEqualTo(percentageResponse);
