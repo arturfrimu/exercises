@@ -5,16 +5,13 @@ import com.arturfrimu.exercisesback.controller.enumeration.ExerciseComparison;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseSumPosition;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseType;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
-import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
-import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
@@ -193,25 +190,5 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
             throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
 
         }
-    }
-
-    @Override
-    public boolean verify(VerifyRequest verifyRequest) {
-        Exercise exercise = exerciseDAO.getExercise(verifyRequest.id());
-
-        if (Objects.isNull(exercise)) {
-            throw new ResourceNotFoundException("Exercise not found with id: %s".formatted(verifyRequest.id()));
-        }
-
-        boolean isCorrect = exercise.verify(verifyRequest.userInput());
-
-        if (isCorrect) {
-            Exercise correctExercise = exercise.markAs(CORRECT);
-            exerciseDAO.putExercise(correctExercise.id(), correctExercise);
-        } else {
-            Exercise errorExercise = exercise.markAs(ERROR);
-            exerciseDAO.putExercise(errorExercise.id(), errorExercise);
-        }
-        return isCorrect;
     }
 }
