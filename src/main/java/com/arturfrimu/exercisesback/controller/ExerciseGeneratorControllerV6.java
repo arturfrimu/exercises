@@ -20,6 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/api/v6/exercise-generator")
 public class ExerciseGeneratorControllerV6 {
     private final GenerateExerciseService generateExerciseService;
+    private final VerifyExerciseService verifyExerciseService;
     private final ListAllExercisesService listAllExercisesService;
     private final FindExerciseService findExerciseService;
     private final FindPercentageExerciseService findPercentageExerciseService;
@@ -37,7 +38,7 @@ public class ExerciseGeneratorControllerV6 {
 
     @PostMapping
     public ResponseEntity<Boolean> verify(@RequestBody VerifyRequest verifyRequest) {
-        boolean isCorrect = generateExerciseService.verify(verifyRequest);
+        boolean isCorrect = verifyExerciseService.verify(verifyRequest);
 
         return ResponseEntity.ok(isCorrect);
     }
