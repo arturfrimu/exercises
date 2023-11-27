@@ -1,6 +1,5 @@
 package com.arturfrimu.exercisesback.service;
-
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
@@ -15,7 +14,7 @@ import static com.arturfrimu.exercisesback.controller.enumeration.Status.ERROR;
 @Service
 @RequiredArgsConstructor
 public class VerifyExerciseServiceImpl implements VerifyExerciseService {
-    private final ExerciseDAOInterface exerciseDAO;
+    private final ExerciseDAOImpl exerciseDAO;
 
     @Override
     public boolean verify(VerifyRequest verifyRequest) {

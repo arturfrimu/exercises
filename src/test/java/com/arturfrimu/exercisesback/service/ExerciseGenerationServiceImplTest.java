@@ -1,6 +1,7 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.DAO.ExerciseRepository;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +23,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ExerciseGenerationServiceImplTest {
     @Autowired
-    private ExerciseDAOInterface exerciseDAO;
+    private ExerciseRepository exerciseRepository;
+    @Autowired
+    private ExerciseDAOImpl exerciseDAO;
     @Autowired
     private FindPercentageExerciseService findPercentageExerciseService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        exerciseDAO.clear();
+        exerciseRepository.deleteAll();
     }
 
     @MethodSource("getPercentageArgumentsProvider")

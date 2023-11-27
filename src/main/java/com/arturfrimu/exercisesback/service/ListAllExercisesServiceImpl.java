@@ -1,6 +1,6 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ListAllExercisesServiceImpl implements ListAllExercisesService {
-    private final ExerciseDAOInterface exerciseDAO;
+    private final ExerciseDAOImpl exerciseDAO;
 
     @Override
     public List<ExerciseResponse> getAll() {

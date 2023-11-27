@@ -1,6 +1,5 @@
 package com.arturfrimu.exercisesback.service;
-
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOInterface;
+import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseComparison;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseSumPosition;
 import com.arturfrimu.exercisesback.controller.enumeration.ExerciseType;
@@ -20,7 +19,7 @@ import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
 @Service
 @RequiredArgsConstructor
 public class GenerateExerciseServiceImpl implements GenerateExerciseService {
-    private final ExerciseDAOInterface exerciseDAO;
+    private final ExerciseDAOImpl exerciseDAO;
     private final RandomNumberGenerator<Integer> randomIntGenerator;
     private final ExerciseConfigurationService exerciseConfigurationService;
 
