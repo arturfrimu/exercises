@@ -33,20 +33,24 @@ public class ExerciseDAOImpl {
         return exercises;
     }
 
-    public Exercise getExercise(UUID id) {
-        ExerciseEntity exerciseEntity = null;
-        Optional<ExerciseEntity> optional = exerciseRepository.findById(id);
-
-        if (optional.isPresent()) {
-            exerciseEntity = optional.get();
-        }
-        Exercise exercise = new Exercise(
-                exerciseEntity.getId(),
-                exerciseEntity.getExpression(),
-                exerciseEntity.getResult(),
-                exerciseEntity.getStatus());
-        return exercise;
-
+    /**
+     * @param id
+     * @return Din DAO returnam Optional<Exercise> si lasam service-ul care raspunde de business logica sa
+     * decida ce sa faca daca nu a fost gasit nici un exercitiu cu acest Id .
+     * Incata despre Optional
+     * Optional.isPresent()
+     * Optional.isEmpty()
+     * Optional.orElse()
+     * Optional.orElseThrow()
+     * Optional.map()
+     */
+    public Optional<Exercise> getExercise(UUID id) {
+        return exerciseRepository.findById(id)
+                .map(exercise -> new Exercise(
+                        exercise.getId(),
+                        exercise.getExpression(),
+                        exercise.getResult(),
+                        exercise.getStatus()));
     }
 
     public long size() {

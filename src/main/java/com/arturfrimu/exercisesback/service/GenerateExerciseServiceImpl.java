@@ -38,7 +38,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
         UUID exerciseId = UUID.randomUUID();
 
-        while (exerciseDAO.getExercise(exerciseId) != null) {
+        while (exerciseDAO.getExercise(exerciseId).isPresent()) { // folosim isPresent de la optional in loc de != null
             exerciseId = UUID.randomUUID();
         }
 
