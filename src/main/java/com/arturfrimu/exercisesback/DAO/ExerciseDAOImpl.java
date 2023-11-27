@@ -53,14 +53,18 @@ public class ExerciseDAOImpl {
         return exerciseRepository.count();
     }
 
-    public void putAll(Map<UUID, Exercise> map) {
-        List<ExerciseEntity> values = map.values().stream().map(exercise->new ExerciseEntity(exercise.id(),
-                exercise.expression(),
-                exercise.result(),
-                exercise.status())).toList();
-        exerciseRepository.saveAll(values);
+    public void putAll(List<Exercise> exercises) {
+        List<ExerciseEntity> exerciseEntities = exercises
+                .stream()
+                .map(exercise -> new ExerciseEntity(
+                        exercise.id(),
+                        exercise.expression(),
+                        exercise.result(),
+                        exercise.status())
+                )
+                .toList();
+        exerciseRepository.saveAll(exerciseEntities);
     }
-
 }
 
 

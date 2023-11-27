@@ -24,8 +24,8 @@ public class ExerciseEntity {
     public ExerciseEntity() {
     }
 
-    public ExerciseEntity(UUID exerciseId, String sum, String result,Status status) {
-        this.id = id;
+    public ExerciseEntity(UUID exerciseId, String expression, String result,Status status) {
+        this.id = exerciseId;
         this.expression = expression;
         this.result = result;
         this.status = status;
