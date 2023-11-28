@@ -1,6 +1,6 @@
-package com.arturfrimu.exercisesback.Entity;
+package com.arturfrimu.exercisesback.entity;
 
-import com.arturfrimu.exercisesback.controller.enumeration.Status;
+import com.arturfrimu.exercisesback.enumeration.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

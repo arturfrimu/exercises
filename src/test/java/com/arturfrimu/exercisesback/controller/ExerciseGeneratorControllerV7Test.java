@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.UNSOLVED;
+import static com.arturfrimu.exercisesback.enumeration.Status.UNSOLVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.RequestEntity.get;

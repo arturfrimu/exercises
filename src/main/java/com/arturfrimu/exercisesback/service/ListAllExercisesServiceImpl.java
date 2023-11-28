@@ -1,6 +1,6 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import lombok.RequiredArgsConstructor;

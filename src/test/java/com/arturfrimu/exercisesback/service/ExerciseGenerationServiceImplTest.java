@@ -1,7 +1,7 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
-import com.arturfrimu.exercisesback.DAO.ExerciseRepository;
+import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.dao.ExerciseRepository;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
+import static com.arturfrimu.exercisesback.enumeration.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

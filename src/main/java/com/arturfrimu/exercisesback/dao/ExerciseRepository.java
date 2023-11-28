@@ -1,6 +1,6 @@
-package com.arturfrimu.exercisesback.DAO;
+package com.arturfrimu.exercisesback.dao;
 
-import com.arturfrimu.exercisesback.Entity.ExerciseEntity;
+import com.arturfrimu.exercisesback.entity.ExerciseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

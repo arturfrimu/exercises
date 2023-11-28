@@ -1,14 +1,14 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.CORRECT;
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.ERROR;
+import static com.arturfrimu.exercisesback.enumeration.Status.CORRECT;
+import static com.arturfrimu.exercisesback.enumeration.Status.ERROR;
 
 @Service
 @RequiredArgsConstructor

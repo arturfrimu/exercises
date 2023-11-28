@@ -1,8 +1,8 @@
 package com.arturfrimu.exercisesback.service;
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
-import com.arturfrimu.exercisesback.controller.enumeration.ExerciseComparison;
-import com.arturfrimu.exercisesback.controller.enumeration.ExerciseSumPosition;
-import com.arturfrimu.exercisesback.controller.enumeration.ExerciseType;
+import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.enumeration.ExerciseComparison;
+import com.arturfrimu.exercisesback.enumeration.ExerciseSumPosition;
+import com.arturfrimu.exercisesback.enumeration.ExerciseType;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.*;
+import static com.arturfrimu.exercisesback.enumeration.Status.*;
 
 @Slf4j
 @Service

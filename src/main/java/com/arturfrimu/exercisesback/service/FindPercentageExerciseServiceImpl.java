@@ -1,7 +1,7 @@
 package com.arturfrimu.exercisesback.service;
 
-import com.arturfrimu.exercisesback.DAO.ExerciseDAOImpl;
-import com.arturfrimu.exercisesback.controller.enumeration.Status;
+import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
+import com.arturfrimu.exercisesback.enumeration.Status;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.CORRECT;
-import static com.arturfrimu.exercisesback.controller.enumeration.Status.ERROR;
+import static com.arturfrimu.exercisesback.enumeration.Status.CORRECT;
+import static com.arturfrimu.exercisesback.enumeration.Status.ERROR;
 import static java.math.MathContext.DECIMAL32;
 
 @RequiredArgsConstructor
