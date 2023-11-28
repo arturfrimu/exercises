@@ -1,6 +1,6 @@
 package com.arturfrimu.exercisesback.controller.exercise;
 
-import com.arturfrimu.exercisesback.controller.enumeration.Status;
+import com.arturfrimu.exercisesback.enumeration.Status;
 
 import java.util.UUID;
 
