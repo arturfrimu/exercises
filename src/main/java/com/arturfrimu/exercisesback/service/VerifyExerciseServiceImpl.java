@@ -32,10 +32,10 @@ public class VerifyExerciseServiceImpl implements VerifyExerciseService {
 
         if (isCorrect) {
             Exercise correctExercise = exercise.markAs(CORRECT);
-            exerciseDAO.putExercise(correctExercise.id(), correctExercise);
+            exerciseDAO.save(correctExercise);
         } else {
             Exercise errorExercise = exercise.markAs(ERROR);
-            exerciseDAO.putExercise(errorExercise.id(), errorExercise);
+            exerciseDAO.save(errorExercise);
         }
         return isCorrect;
     }

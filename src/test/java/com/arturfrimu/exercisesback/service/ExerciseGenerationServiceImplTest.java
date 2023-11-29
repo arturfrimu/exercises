@@ -36,7 +36,7 @@ class ExerciseGenerationServiceImplTest {
     @MethodSource("getPercentageArgumentsProvider")
     @ParameterizedTest
     void getPercentage(final List<Exercise> exercises, PercentageResponse percentageResponse) {
-        exerciseDAO.putAll(exercises);
+        exerciseDAO.saveAll(exercises);
 
         PercentageResponse percentage = findPercentageExerciseService.find();
 
