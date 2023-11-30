@@ -49,7 +49,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String sum = first + " + " + second + " = ?";
                 String result = String.valueOf(first + second);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, sum, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
@@ -62,7 +62,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String sum = first + " + ? = " + second;
                 String result = String.valueOf(second - first);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, sum, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
@@ -75,7 +75,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String sum = "? + " + first + " = " + second;
                 String result = String.valueOf(second - first);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, sum, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, sum, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, sum, UNSOLVED);
 
             } else {
@@ -94,7 +94,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String difference = first + " - " + second + " = ?";
                 String result = String.valueOf(first - second);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, difference, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else if (ExerciseSumPosition.CENTER.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
@@ -107,14 +107,14 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String difference = first + " - ? = " + second;
                 String result = String.valueOf(first - second);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, difference, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else if (ExerciseSumPosition.LEFT.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
 
                 String difference = "? - " + first + " = " + second;
                 String result = String.valueOf(first + second);
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, difference, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, difference, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, difference, UNSOLVED);
 
             } else {
@@ -125,7 +125,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
             String multiplication = first + " * " + second + " = ?";
             String result = String.valueOf(first * second);
-            exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, multiplication, result, UNSOLVED));
+            exerciseDAO.save(new Exercise(exerciseId, multiplication, result, UNSOLVED));
             return new ExerciseResponse(exerciseId, multiplication, UNSOLVED);
 
         } else if (ExerciseType.DIVISION.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
@@ -138,7 +138,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
             String division = first + " / " + second + " = ?";
             String result = String.valueOf(first / second);
-            exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, division, result, UNSOLVED));
+            exerciseDAO.save(new Exercise(exerciseId, division, result, UNSOLVED));
             return new ExerciseResponse(exerciseId, division, UNSOLVED);
 
         } else if (ExerciseType.COMPARISON.name().equalsIgnoreCase(currentExerciseConfiguration.type())) {
@@ -154,7 +154,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
                     result = "<";
                 }
 
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, result, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, comparison, result, UNSOLVED));
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
 
             } else if (ExerciseComparison.TWO.name().equalsIgnoreCase(currentExerciseConfiguration.position())) {
@@ -179,7 +179,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
                 String combinedResult = result1 + "|" + result2;
 
-                exerciseDAO.putExercise(exerciseId, new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
+                exerciseDAO.save(new Exercise(exerciseId, comparison, combinedResult, UNSOLVED));
                 return new ExerciseResponse(exerciseId, comparison, UNSOLVED);
             } else {
                 throw new RuntimeException("Poziția specificată nu este recunoscută: " + currentExerciseConfiguration.position());
