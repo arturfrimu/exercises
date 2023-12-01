@@ -6,7 +6,6 @@ import com.arturfrimu.exercisesback.enumeration.ExerciseType;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
-import com.arturfrimu.exercisesback.repository.ExerciseConfigurationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

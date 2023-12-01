@@ -1,5 +1,6 @@
-package com.arturfrimu.exercisesback.repository;
+package com.arturfrimu.exercisesback.service;
 
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.CurrentExerciseConfiguration;
 import com.arturfrimu.exercisesback.service.RandomNumberGenerator;
 import lombok.RequiredArgsConstructor;

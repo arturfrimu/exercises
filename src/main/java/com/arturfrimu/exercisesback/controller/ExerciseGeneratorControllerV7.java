@@ -4,7 +4,7 @@ import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
-import com.arturfrimu.exercisesback.repository.ExerciseConfigurationService;
+import com.arturfrimu.exercisesback.service.ExerciseConfigurationService;
 import com.arturfrimu.exercisesback.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
