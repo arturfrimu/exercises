@@ -5,10 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "exercises")
 public class ExerciseEntity {
     @Id
@@ -20,9 +22,6 @@ public class ExerciseEntity {
     private String result;
     @Column(name = "status")
     private Status status;
-
-    public ExerciseEntity() {
-    }
 
     public ExerciseEntity(UUID exerciseId, String expression, String result,Status status) {
         this.id = exerciseId;
