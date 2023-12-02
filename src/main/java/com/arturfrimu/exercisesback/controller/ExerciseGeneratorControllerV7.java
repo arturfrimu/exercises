@@ -9,6 +9,7 @@ import com.arturfrimu.exercisesback.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,14 @@ public class ExerciseGeneratorControllerV7 {
     private final FindPercentageExerciseService findPercentageExerciseService;
     private final ExerciseConfigurationService exerciseConfigurationService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/config")
     public ResponseEntity<?> config(@RequestBody ExerciseConfiguration configuration) {
         exerciseConfigurationService.setConfiguration(configuration);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     @GetMapping
     public ResponseEntity<ExerciseResponse> generateExercise() {
         ExerciseResponse exerciseResponse = generateExerciseService.generate();
@@ -42,6 +45,7 @@ public class ExerciseGeneratorControllerV7 {
         return ResponseEntity.ok(exerciseResponse);
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     @PostMapping
     public ResponseEntity<Boolean> verify(@RequestBody VerifyRequest verifyRequest) {
         boolean isCorrect = verifyExerciseService.verify(verifyRequest);
@@ -49,18 +53,21 @@ public class ExerciseGeneratorControllerV7 {
         return ResponseEntity.ok(isCorrect);
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseResponse>> getAll() {
         List<ExerciseResponse> allExercises = listAllExercisesService.getAll();
         return ResponseEntity.ok(allExercises);
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     @GetMapping("/exercises/{id}")
     public ResponseEntity<ExerciseResponse> getById(@PathVariable UUID id) {
         ExerciseResponse exercise = findExerciseService.findById(id);
         return ResponseEntity.ok(new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()));
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
     @GetMapping("/percentage")
     public ResponseEntity<PercentageResponse> getPercentage() {
         PercentageResponse percentageResponse = findPercentageExerciseService.find();
