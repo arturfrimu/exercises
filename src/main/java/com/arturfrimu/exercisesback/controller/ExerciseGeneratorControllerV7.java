@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
-@CrossOrigin(origins = "*", methods = {POST, GET, PUT, PATCH})
+//@CrossOrigin(origins = "*", methods = {POST, GET, PUT, PATCH})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
