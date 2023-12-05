@@ -5,7 +5,8 @@ import com.arturfrimu.exercisesback.enumeration.ExerciseSumPosition;
 import com.arturfrimu.exercisesback.enumeration.ExerciseType;
 import com.arturfrimu.exercisesback.controller.exercise.Exercise;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
-import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
     @Override
     public ExerciseResponse generate() {
-        ExerciseConfigurationRepository.CurrentExerciseConfiguration currentExerciseConfiguration =
+        ExerciseConfigurationImpl.CurrentExerciseConfiguration currentExerciseConfiguration =
                 exerciseConfigurationService.getCurrentExerciseConfiguration();
 
         int min = currentExerciseConfiguration.min();
