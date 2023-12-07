@@ -4,7 +4,6 @@ import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
-import com.arturfrimu.exercisesback.service.ExerciseConfigurationService;
 import com.arturfrimu.exercisesback.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
-//@CrossOrigin(origins = "*", methods = {POST, GET, PUT, PATCH})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,14 +26,14 @@ public class ExerciseGeneratorControllerV7 {
     private final FindPercentageExerciseService findPercentageExerciseService;
     private final ExerciseConfigurationService exerciseConfigurationService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/config")
     public ResponseEntity<?> config(@RequestBody ExerciseConfiguration configuration) {
         exerciseConfigurationService.setConfiguration(configuration);
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public ResponseEntity<ExerciseResponse> generateExercise() {
         ExerciseResponse exerciseResponse = generateExerciseService.generate();
@@ -45,7 +41,7 @@ public class ExerciseGeneratorControllerV7 {
         return ResponseEntity.ok(exerciseResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping
     public ResponseEntity<Boolean> verify(@RequestBody VerifyRequest verifyRequest) {
         boolean isCorrect = verifyExerciseService.verify(verifyRequest);
@@ -53,21 +49,21 @@ public class ExerciseGeneratorControllerV7 {
         return ResponseEntity.ok(isCorrect);
     }
 
-    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseResponse>> getAll() {
         List<ExerciseResponse> allExercises = listAllExercisesService.getAll();
         return ResponseEntity.ok(allExercises);
     }
 
-    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/exercises/{id}")
     public ResponseEntity<ExerciseResponse> getById(@PathVariable UUID id) {
         ExerciseResponse exercise = findExerciseService.findById(id);
         return ResponseEntity.ok(new ExerciseResponse(exercise.id(), exercise.expression(), exercise.status()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') and hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/percentage")
     public ResponseEntity<PercentageResponse> getPercentage() {
         PercentageResponse percentageResponse = findPercentageExerciseService.find();
