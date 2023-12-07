@@ -43,7 +43,7 @@ class ExerciseGeneratorControllerV7IntegrationTest {
 
     @Test
     @WithMockUser
-    void testGenerateExerciseV1() throws Exception {
+    void testGenerateExercise() throws Exception {
         ExerciseResponse mockResponse = new ExerciseResponse(
                 UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
                 "1 + 1 = ?",

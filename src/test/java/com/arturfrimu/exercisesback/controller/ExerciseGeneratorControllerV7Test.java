@@ -4,6 +4,8 @@ import com.arturfrimu.exercisesback.common.BaseRestTemplate;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -35,11 +39,28 @@ class ExerciseGeneratorControllerV7Test {
     @Autowired
     private BaseRestTemplate restTemplate;
 
+    private static final String auth = "user:password";
+    private static final String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
+    private static final HttpHeaders headers = new HttpHeaders();
+
+    @BeforeAll
+    static void addAuthorization() {
+        headers.add("Authorization", "Basic " + encodedAuth);
+    }
+
+    @Test
+    void testGenerateExerciseWithBasicAuth() {
+        var response = restTemplate.exchange(get("http://localhost:%d/api/v7/exercise-generator".formatted(PORT))
+                .headers(headers)
+                .build(), EXERCISE);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+    }
+
     @ParameterizedTest
     @MethodSource("generateExerciseArgumentsProvider")
     void generateExercise(final ExerciseConfiguration configuration, Predicate<String> predicate, final String simbol) {
-        var response = restTemplate.exchange(post("http://localhost:%d/api/v7/exercise-generator/config".formatted(PORT)).body(configuration), new ParameterizedTypeReference<Void>() {
-        });
+        var response = restTemplate.exchange(post("http://localhost:%d/api/v7/exercise-generator/config".formatted(PORT)).body(configuration), VOID);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
 
         for (int i = 0; i < 10; i++) {
@@ -85,6 +106,6 @@ class ExerciseGeneratorControllerV7Test {
     }
 
     // @formatter:off
-    static final ParameterizedTypeReference<ExerciseResponse> EXERCISE = new ParameterizedTypeReference<>() {
-    };
+    static final ParameterizedTypeReference<ExerciseResponse> EXERCISE = new ParameterizedTypeReference<>() {};
+    static final ParameterizedTypeReference<Void> VOID = new ParameterizedTypeReference<>() {};
 }
