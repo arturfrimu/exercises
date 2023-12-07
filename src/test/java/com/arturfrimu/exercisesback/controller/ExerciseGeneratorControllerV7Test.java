@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import static org.springframework.http.RequestEntity.get;
 import static org.springframework.http.RequestEntity.post;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@ActiveProfiles("test")
 class ExerciseGeneratorControllerV7Test {
 
     @LocalServerPort
