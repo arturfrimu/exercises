@@ -4,6 +4,8 @@ import com.arturfrimu.exercisesback.common.BaseRestTemplate;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl.ExerciseConfiguration;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +34,14 @@ class ExerciseGeneratorControllerV7Test {
 
     @Autowired
     private BaseRestTemplate restTemplate;
+
+    @Autowired
+    private ExerciseConfigurationRepository exerciseConfigurationRepository;
+
+    @BeforeEach
+    void clearDatabase() {
+        exerciseConfigurationRepository.deleteAll();
+    }
 
     @ParameterizedTest
     @MethodSource("generateExerciseArgumentsProvider")
