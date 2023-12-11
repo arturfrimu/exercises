@@ -19,10 +19,9 @@ public class ExerciseConfigurationImpl {
     private final ExerciseConfigurationRepository exerciseConfigurationRepository;
 
     public void setExerciseConfiguration(ExerciseConfiguration exerciseConfiguration) {
-//        if (exerciseConfiguration.range().min() <= 0 || exerciseConfiguration.range().max() <= 0 ||
-//                exerciseConfiguration.range().min() > 10 || exerciseConfiguration.range().max() > 10) {
-//            throw new IllegalArgumentException("Intervalul pentru min și max trebuie să fie între 1 și 10 inclusiv.");
-//        }
+        if (exerciseConfiguration.range().min() <= 0 || exerciseConfiguration.range().max() <= 0) {
+            throw new IllegalArgumentException("min și max trebuie sa fie mai mare ca 0");
+        }
         ExerciseConfigurationEntity exerciseConfigurationEntity = new ExerciseConfigurationEntity();
         List<TypeEntity> typeEntities = exerciseConfiguration.type().stream()
                 .map(type -> new TypeEntity(type, exerciseConfigurationEntity))
