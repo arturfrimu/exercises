@@ -3,7 +3,7 @@ package com.arturfrimu.exercisesback.controller;
 import com.arturfrimu.exercisesback.controller.request.VerifyRequest;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.controller.response.PercentageResponse;
-import com.arturfrimu.exercisesback.entity.ExerciseConfigurationEntity;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl.ExerciseConfiguration;
 import com.arturfrimu.exercisesback.service.ExerciseConfigurationService;
 import com.arturfrimu.exercisesback.service.*;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ExerciseGeneratorControllerV7 {
     private final ExerciseConfigurationService exerciseConfigurationService;
 
     @PostMapping("/config")
-    public ResponseEntity<?> config(@RequestBody ExerciseConfigurationEntity configuration) {
+    public ResponseEntity<?> config(@RequestBody ExerciseConfiguration configuration) {
         exerciseConfigurationService.setConfiguration(configuration);
         return ResponseEntity.ok().build();
     }
@@ -67,4 +67,3 @@ public class ExerciseGeneratorControllerV7 {
         return ResponseEntity.ok(percentageResponse);
     }
 }
-
