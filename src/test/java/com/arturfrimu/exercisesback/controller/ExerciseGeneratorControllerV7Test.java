@@ -2,8 +2,10 @@ package com.arturfrimu.exercisesback.controller;
 
 import com.arturfrimu.exercisesback.common.BaseRestTemplate;
 import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl.ExerciseConfiguration;
 import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
-import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository.ExerciseConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +34,14 @@ class ExerciseGeneratorControllerV7Test {
 
     @Autowired
     private BaseRestTemplate restTemplate;
+
+    @Autowired
+    private ExerciseConfigurationRepository exerciseConfigurationRepository;
+
+    @BeforeEach
+    void clearDatabase() {
+        exerciseConfigurationRepository.deleteAll();
+    }
 
     @ParameterizedTest
     @MethodSource("generateExerciseArgumentsProvider")
@@ -70,15 +80,15 @@ class ExerciseGeneratorControllerV7Test {
         Predicate<String> right = (expression) -> expression.endsWith("?");
 
         return Stream.of(
-                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("left"), new ExerciseConfigurationRepository.Range(1, 5)), left, "+"),
-                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("center"), new ExerciseConfigurationRepository.Range(5, 10)), center, "+"),
-                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("right"), new ExerciseConfigurationRepository.Range(2, 8)), right, "+"),
-                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("left"), new ExerciseConfigurationRepository.Range(3, 12)), left, "-"),
-                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("center"), new ExerciseConfigurationRepository.Range(1, 2)), center, "-"),
-                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("right"), new ExerciseConfigurationRepository.Range(2, 4)), right, "-"),
-                Arguments.of(new ExerciseConfiguration(List.of("multiplication"), List.of("right"), new ExerciseConfigurationRepository.Range(1, 4)), right, "*"),
-                Arguments.of(new ExerciseConfiguration(List.of("division"), List.of("right"), new ExerciseConfigurationRepository.Range(3, 5)), right, "/"),
-                Arguments.of(new ExerciseConfiguration(List.of("division"), List.of("right"), new ExerciseConfigurationRepository.Range(5, 7)), right, "/")
+                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("left"), new ExerciseConfigurationImpl.Range(1, 5)), left, "+"),
+                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("center"), new ExerciseConfigurationImpl.Range(5, 10)), center, "+"),
+                Arguments.of(new ExerciseConfiguration(List.of("sum"), List.of("right"), new ExerciseConfigurationImpl.Range(2, 8)), right, "+"),
+                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("left"), new ExerciseConfigurationImpl.Range(3, 12)), left, "-"),
+                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("center"), new ExerciseConfigurationImpl.Range(1, 2)), center, "-"),
+                Arguments.of(new ExerciseConfiguration(List.of("difference"), List.of("right"), new ExerciseConfigurationImpl.Range(2, 4)), right, "-"),
+                Arguments.of(new ExerciseConfiguration(List.of("multiplication"), List.of("right"), new ExerciseConfigurationImpl.Range(1, 4)), right, "*"),
+                Arguments.of(new ExerciseConfiguration(List.of("division"), List.of("right"), new ExerciseConfigurationImpl.Range(3, 5)), right, "/"),
+                Arguments.of(new ExerciseConfiguration(List.of("division"), List.of("right"), new ExerciseConfigurationImpl.Range(5, 7)), right, "/")
         );
     }
 

@@ -1,18 +1,19 @@
 package com.arturfrimu.exercisesback.service;
+
+import com.arturfrimu.exercisesback.controller.exercise.Exercise;
+import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
 import com.arturfrimu.exercisesback.dao.ExerciseDAOImpl;
 import com.arturfrimu.exercisesback.enumeration.ExerciseComparison;
 import com.arturfrimu.exercisesback.enumeration.ExerciseSumPosition;
 import com.arturfrimu.exercisesback.enumeration.ExerciseType;
-import com.arturfrimu.exercisesback.controller.exercise.Exercise;
-import com.arturfrimu.exercisesback.controller.response.ExerciseResponse;
-import com.arturfrimu.exercisesback.repository.ExerciseConfigurationRepository;
+import com.arturfrimu.exercisesback.repository.ExerciseConfigurationImpl.CurrentExerciseConfiguration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.arturfrimu.exercisesback.enumeration.Status.*;
+import static com.arturfrimu.exercisesback.enumeration.Status.UNSOLVED;
 
 @Slf4j
 @Service
@@ -24,7 +25,7 @@ public class GenerateExerciseServiceImpl implements GenerateExerciseService {
 
     @Override
     public ExerciseResponse generate() {
-        ExerciseConfigurationRepository.CurrentExerciseConfiguration currentExerciseConfiguration =
+        CurrentExerciseConfiguration currentExerciseConfiguration =
                 exerciseConfigurationService.getCurrentExerciseConfiguration();
 
         int min = currentExerciseConfiguration.min();
